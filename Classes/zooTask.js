@@ -10,19 +10,33 @@
 // И когда он их накормил, звери говорят "спасибо, я покушал" и если у них есть силы, то начинают играть
 // Звери: Жираф, слон, гепард, леопард
 
+// Дополнение
+// Теперь наши животные не просто едят 1 крошку, они получают случайную порцию от сторожа. 
+// И силы животного теперь зависят от еды. 
+// Во время сна еда усваивается организмом и дает ему силы. 
+// У каждого животного свой метаболизм и необходимое для восполнения сил количество еды.
+
+// Псевдокод
+// 1. Еда которую едят животные должна быть случайной 
+// 2. Сделать силу зависимой от количества поглощенной еды
+// 3. Во время сна сила восполняется от количество поглощенной еды
+// 4. Дать каждому животному свой параметр добавления еды к силе от кол-ва поглощенной еды
+// 
+
 
 class Animal {
     constructor(name) {
         this._name = name
-        this.power = 0
+        this._food = 0
     }
     eat() {
+        this._food = Math.floor(Math.random() * 10)
         console.log(`${this._name}: Спасибо, покушал`)
         this.play()
     }
     play() {
-        if (this.power !== 0) {
-            console.log(`${this._name}: Время играть`)
+        if (this.power >= 2) {
+            console.log(`${this._name}: Время  играть`)
             this.power--
         } else {
             console.log(`${this._name}: нужно поспать`)
@@ -31,14 +45,33 @@ class Animal {
     }
     sleep() {
         console.log(`${this._name}: спит`)
-        this.power++
     }
 }
 
-class Giraffe extends Animal { }
-class Elephant extends Animal { }
-class Gepard extends Animal { }
-class Leopard extends Animal { }
+class Giraffe extends Animal {
+    sleep() {
+        super.sleep()
+        this.power = this._food / 4
+    }
+}
+class Elephant extends Animal {
+    sleep() {
+        super.sleep()
+        this.power = this._food / 5
+    }
+}
+class Gepard extends Animal {
+    sleep() {
+        super.sleep()
+        this.power = this._food / 3
+    }
+}
+class Leopard extends Animal {
+    sleep() {
+        super.sleep()
+        this.power = this._food / 2
+    }
+}
 
 class ZooWorker {
     #name;
@@ -51,7 +84,7 @@ class ZooWorker {
     feed() {
         this.feeding = setInterval(() => {
             this.#listOfAnimals.forEach((item) => item.eat())
-        }, 1000)
+        }, 10000)
     }
     stopFeeding() {
         clearInterval(this.feeding)
@@ -65,9 +98,3 @@ const zooWorker = new ZooWorker([giraffe, elephant, gepard, leopard])
 
 
 // zooWorker.feed()
-
-
-
-
-
-
