@@ -78,7 +78,7 @@ class ZooWorker {
                 let food = Math.floor(Math.random() * 10)
                 item.eat(food)
             })
-        }, 1000)
+        }, 10000)
     }
     stopFeeding() {
         clearInterval(this.feeding)
