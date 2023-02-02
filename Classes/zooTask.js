@@ -25,6 +25,7 @@
 
 
 class Animal {
+    _efficiencyСoefficient = 0
     constructor(name) {
         this._name = name
         this._stomach = 0
@@ -39,7 +40,7 @@ class Animal {
 
         if (this._power >= 2) {
             console.log(`${this._name}: Время  играть`)
-            this._power = this._power - 2
+            this._power -= 2
         } else {
             console.log(`${this._name}: нужно поспать`)
             this.sleep()
