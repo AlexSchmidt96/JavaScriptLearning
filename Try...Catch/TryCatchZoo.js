@@ -32,40 +32,59 @@ class Veterinarian {
         this.#name = this.constructor.name
         this.#listOfAnimals = listOfAnimals
     }
-    givingPill;
-    givePill(item) {
+    givePill(beast) {
         let probability = Math.random()
         if (probability > 0.25) {
-            item.takePill()
-            console.log(`${item._name}: принял таблетку и у него ${item._health} здоровья`)
+            beast.takePill()
+            console.log(`${beast.name}: принял таблетку и у него ${beast.health} здоровья`)
         }
     }
     checking() {
-        this.status = setInterval(() => {
-            this.#listOfAnimals.forEach((item, index) => {
-                try {
-                    item.check()
-                    this.givePill(item)
-                } catch (error) {
-                    if (item._health >= 3) {
-                        console.log(`${item._name}: Начинаем реанимацию!`)
-                        this.reanimation(item)
-                    } else {
-                        this.funeral(index, item)
+        this.#listOfAnimals.forEach((beast, index) => {
+            try {
+                beast.check()
+                this.givePill(beast)
+            } catch (error) {
+                if (error instanceof ReanimatableDeathError) {
+                    this.reanimation(beast)
+                } else if (error instanceof UnreanimatableDeathError) {
+                    this.funeral(index, beast)
+                    if (this.#listOfAnimals.length === 0) {
+                        this.quit()
                     }
+                } else {
+                    throw error
                 }
-            })
-        }, 10000)
+            }
+        })
+        this.timerId = setTimeout(() => { this.checking() }, 10000)
     }
-    reanimation(item) {
-        console.log(`${item._name}: реанимируем!`)
-        this.givePill(item)
+    reanimation(beast) {
+        console.log(`${beast.name}: реанимируем!`)
+        beast.reanimate()
     }
-    funeral(index, item) {
+    funeral(index, beast) {
         this.#listOfAnimals.splice(index, 1)
-        console.log(`${item._name} : он умер`)
+        console.log(`${beast.name}: он похоронен`)
     }
+    quit() {
+        console.log('Я увольняюсь')
+        clearInterval(this.timerId)
+    }
+}
 
+class ReanimatableDeathError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = this.constructor.name;
+    }
+}
+
+class UnreanimatableDeathError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = this.constructor.name;
+    }
 }
 
 class Animal {
@@ -74,17 +93,31 @@ class Animal {
         this._health = 0
         this._stomach = 0
     }
+    get name() {
+        return this._name
+    }
+    get health() {
+        return this._health
+    }
     check() {
         if (this._stomach === -1) {
-            throw new ZooError(`${this._name}: умирает!`)
+            if (this.health >= 3) {
+                throw new ReanimatableDeathError(`${this.name}: умирает!`)
+            } else {
+                throw new UnreanimatableDeathError(`${this.name}: умeр!`)
+            }
         }
-        this.absorb()
+        this.#absorb()
     }
     takePill() {
         this._stomach++
         this._health++
     }
-    absorb() {
+    reanimate() {
+        this._stomach = 0
+        this._health = 0
+    }
+    #absorb() {
         this._stomach--
     }
 }
