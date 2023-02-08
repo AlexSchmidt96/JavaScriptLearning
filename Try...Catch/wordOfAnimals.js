@@ -51,9 +51,15 @@
 // Есди первая форма это травоядный , а сосед справа травоядный то удалить его из массива
 // Есди первая форма это травоядный , а сосед справа хищник то ничего не делать
 
+// 🐆🐄🌿🐆🌿🐄🌿🌿🌿🐆🐆🌿🐄
+// 🐆🌿🐆🐄🌿🌿🐆🐆🐄
+// 🐆🌿🐆🌿🌿🐆🐆
+// 🐆🌿🐆🌿🌿🐆🐆
 
-// 🐆🐄 🌿
 
+// Я всегда могу создать новую переменную и что-то записать в неё (если хочу)
+// Я всегда могу сравнить два значения друг с другом (с помощью математических операций ===, !==, >, < и тд)
+// Я всегда могу придумать функцию, которая будет ПРИНИМАТЬ аргументы и ВОЗВРАЩАТЬ значение
 
 class Nature {
     constructor() {
@@ -74,9 +80,9 @@ class Nature {
         console.log(`хищников : ${howManyPredators} штук`)
         console.log(`травоядных : ${howManyHerbivores} штук`)
         console.log(nature.wildNature)
-
     }
     fight() {
+        let start = this.wildNature.length
         for (let i = 0; i < this.wildNature.length; i++) {
             if (this.wildNature[i] instanceof Predator && i < this.wildNature.length - 1 && this.wildNature[i + 1] instanceof Herbivore) {
                 this.wildNature.splice(i + 1, 1)
@@ -91,6 +97,12 @@ class Nature {
                 this.wildNature.splice(i - 1, 1)
             }
         }
+
+        if (start > this.wildNature.length) {
+            this.fight()
+        }
+    }
+    showResult() {
         let howManyGrasses = this.wildNature.filter(item => item instanceof Grass).length
         let howManyPredators = this.wildNature.filter(item => item instanceof Predator).length
         let howManyHerbivores = this.wildNature.filter(item => item instanceof Herbivore).length
@@ -153,4 +165,5 @@ const herbivore = new Herbivore(1)
 
 
 nature.pushThemUp()
-nature.fight()
+nature.fight(0)
+nature.showResult()
