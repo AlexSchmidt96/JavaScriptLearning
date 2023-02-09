@@ -61,25 +61,30 @@
 // Я всегда могу сравнить два значения друг с другом (с помощью математических операций ===, !==, >, < и тд)
 // Я всегда могу придумать функцию, которая будет ПРИНИМАТЬ аргументы и ВОЗВРАЩАТЬ значение
 
+
+// TODO существа имеют разный размер популяции
+// TODO выводиться в консоль должны иконки а не объекты
+// TODO говорит о том, может ли животное съесть другое животное - метод животного
+// TODO подумать нет ли кода, который выполняет одно и то же но пишется в нескольких местах (дублируется)
+
 class Nature {
     constructor() {
         this.wildNature = []
-        this.generationOfNumbers = Math.floor(Math.random() * (20 - 10) + 10)
     }
     pushThemUp() {
-        for (let i = 0; i < this.generationOfNumbers; i++) {
+        console.log(numberOfIndividuals)
+        for (let i = 0; i < numberOfIndividuals; i++) {
             this.wildNature.push(new Predator(i))
-            this.wildNature.push(new Herbivore(i))
             this.wildNature.push(new Grass(i))
+            this.wildNature.push(new Herbivore(i))
         }
-        this.wildNature.sort(() => Math.random() - 0.5)
-        let howManyGrasses = this.wildNature.filter(item => item instanceof Grass).length
-        let howManyPredators = this.wildNature.filter(item => item instanceof Predator).length
-        let howManyHerbivores = this.wildNature.filter(item => item instanceof Herbivore).length
-        console.log(`травы : ${howManyGrasses} штук`)
-        console.log(`хищников : ${howManyPredators} штук`)
-        console.log(`травоядных : ${howManyHerbivores} штук`)
-        console.log(nature.wildNature)
+        console.log(numberOfIndividuals)
+        this.sort()
+        this.showResult()
+        this.fight()
+    }
+    population() {
+
     }
     fight() {
         let start = this.wildNature.length
@@ -97,10 +102,14 @@ class Nature {
                 this.wildNature.splice(i - 1, 1)
             }
         }
-
         if (start > this.wildNature.length) {
             this.fight()
+        } else {
+            this.showResult()
         }
+    }
+    sort() {
+        this.wildNature.sort(() => Math.random() - 0.5)
     }
     showResult() {
         let howManyGrasses = this.wildNature.filter(item => item instanceof Grass).length
@@ -139,9 +148,7 @@ class Herbivore {
     get name() {
         return this._name
     }
-    eat() {
 
-    }
 }
 class Predator {
     constructor(num) {
@@ -151,19 +158,11 @@ class Predator {
     get name() {
         return this._name
     }
-    eat() {
-
-    }
 
 }
 
 
 const nature = new Nature()
-const predator = new Predator(1)
-const herbivore = new Herbivore(1)
-
-
 
 nature.pushThemUp()
-nature.fight(0)
-nature.showResult()
+
