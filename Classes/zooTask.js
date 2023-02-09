@@ -25,19 +25,22 @@
 
 
 class Animal {
+    _efficiencyСoefficient = 0
     constructor(name) {
         this._name = name
-        this._food = 0
+        this._stomach = 0
+        this._power = 0
     }
-    eat() {
-        this._food = Math.floor(Math.random() * 10)
+    eat(food) {
+        this._stomach += food
         console.log(`${this._name}: Спасибо, покушал`)
         this.play()
     }
     play() {
-        if (this.power >= 2) {
+
+        if (this._power >= 2) {
             console.log(`${this._name}: Время  играть`)
-            this.power--
+            this._power -= 2
         } else {
             console.log(`${this._name}: нужно поспать`)
             this.sleep()
@@ -45,32 +48,21 @@ class Animal {
     }
     sleep() {
         console.log(`${this._name}: спит`)
+        this._power += this._stomach / this._efficiencyСoefficient
     }
 }
 
 class Giraffe extends Animal {
-    sleep() {
-        super.sleep()
-        this.power = this._food / 4
-    }
+    _efficiencyСoefficient = 4
 }
 class Elephant extends Animal {
-    sleep() {
-        super.sleep()
-        this.power = this._food / 5
-    }
+    _efficiencyСoefficient = 5
 }
 class Gepard extends Animal {
-    sleep() {
-        super.sleep()
-        this.power = this._food / 3
-    }
+    _efficiencyСoefficient = 3
 }
 class Leopard extends Animal {
-    sleep() {
-        super.sleep()
-        this.power = this._food / 2
-    }
+    _efficiencyСoefficient = 2
 }
 
 class ZooWorker {
@@ -83,7 +75,10 @@ class ZooWorker {
     feeding;
     feed() {
         this.feeding = setInterval(() => {
-            this.#listOfAnimals.forEach((item) => item.eat())
+            this.#listOfAnimals.forEach((item) => {
+                let food = Math.floor(Math.random() * 10)
+                item.eat(food)
+            })
         }, 10000)
     }
     stopFeeding() {
