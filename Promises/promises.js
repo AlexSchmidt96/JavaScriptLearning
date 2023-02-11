@@ -1,66 +1,33 @@
 "use strict";
+// Спанчбоб готовит бургеры за 2 секунды каждый.
+// Мы сделали онлайн заказ на 5 бургеров через функцию createOrder(count, callMe) и будем ждать, 
+// пока нам позвонят в нашу функцию callMe по готовности всех бургеров.
 
-// let promise = new Promise(function (resolve, reject) {
-//     resolve(1);
-
-//     setTimeout(() => resolve(2), 1000); // Ignored!
-// });
-
-// promise.then(alert);
+// готовит бургеры за 2 сек = 1 бургер
+// Есть заказ (createOrder(count, callMe)) где count = кол-во нужных бургеров , callMe = функция кал-бек которая сообщает об готовности
 
 
-
-// function delay(ms) {
-//     return new Promise(resolve => setTimeout(resolve, ms))
-// }
-
-// delay(3000).then(() => alert('выполнилось через 3 секунды'));
-
-
-
-// function go() {
-//     showCircle(150, 150, 100, div => {
-//         div.classList.add('message-ball');
-//         div.append("Привет, мир!");
-//     });
-// }
-
-// function showCircle(cx, cy, radius) {
-//     let div = document.createElement('div');
-//     div.style.width = 0;
-//     div.style.height = 0;
-//     div.style.left = cx + 'px';
-//     div.style.top = cy + 'px';
-//     div.className = 'circle';
-//     document.body.append(div);
-
-
-//     return new Promise(resolve => {
-//         setTimeout(() => {
-//             div.style.width = radius * 2 + 'px';
-//             div.style.height = radius * 2 + 'px';
-
-//             div.addEventListener('transitionend', function handler() {
-//                 div.removeEventListener('transitionend', handler);
-//                 resolve(div);
-//             });
-//         }, 0);
-//     })
-// }
-
-
-var uniqueInOrder = function (iterable) {
-    let arr = []
-    for (let i = 0; i < iterable.length; i++) {
-        let count = 0
-        for (let j = i; j < iterable.length; j++) {
-            if (iterable[i] === iterable[j]) {
-                arr.push(iterable[i])
-                count++
-            }
-            if (count > 1) {
-                arr.shift()
-            }
+function createOrder(count, callMe) {
+    let burger = 0
+    setTimeout(function cook() {
+        burger++
+        if (burger === count) {
+            callMe()
+        } else {
+            setTimeout(cook, 2000)
         }
-    }
+    }, 2000)
 }
+
+// function createOrder(count, callMe) {
+// let burger = 0
+// let timerId = setInterval(() => {
+//     burger++
+//     if (burger === count) {
+//         clearInterval(timerId)
+//         callMe()
+//     }
+// }, 2000)
+// }
+
+createOrder(5, () => console.log('Мой заказ готов'));
