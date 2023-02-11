@@ -1,33 +1,37 @@
 "use strict";
-// Спанчбоб готовит бургеры за 2 секунды каждый.
-// Мы сделали онлайн заказ на 5 бургеров через функцию createOrder(count, callMe) и будем ждать, 
-// пока нам позвонят в нашу функцию callMe по готовности всех бургеров.
 
-// готовит бургеры за 2 сек = 1 бургер
-// Есть заказ (createOrder(count, callMe)) где count = кол-во нужных бургеров , callMe = функция кал-бек которая сообщает об готовности
-
-
-function createOrder(count, callMe) {
-    let burger = 0
-    setTimeout(function cook() {
-        burger++
-        if (burger === count) {
-            callMe()
-        } else {
-            setTimeout(cook, 2000)
-        }
-    }, 2000)
-}
-
-// function createOrder(count, callMe) {
-// let burger = 0
-// let timerId = setInterval(() => {
-//     burger++
-//     if (burger === count) {
-//         clearInterval(timerId)
-//         callMe()
-//     }
-// }, 2000)
+// function delay(ms) {
+//     return new Promise((resolve) => setTimeout(resolve, ms))
 // }
+// delay(3000).then(() => alert('выполнилось через 3 секунды'));
 
-createOrder(5, () => console.log('Мой заказ готов'));
+
+// Спанчбоб готовит бургеры за 2 секунды каждый.
+// Мы сделали заказ на 5 бургеров через функцию createOrder(count) и сели за стол. 
+// И теперь мы ждем, пока официант принесет нам заказ и скажем “Спасибо за N бургеров!”
+
+function createOrder(count) {
+    const burger = '🍔'
+    const burgers = []
+    const possibility = Math.random()
+    return new Promise(function (resolve, reject) {
+        setTimeout(function cook() {
+            burgers.push(burger)
+            if (burgers.length === count) {
+                if (possibility > 0.5) {
+                    burgers.pop()
+                    reject(new Error('нету одного бургера'))
+                }
+                resolve(burgers)
+            } else {
+                setTimeout(cook, 2000)
+            }
+        }, 2000)
+    })
+}
+const orderedCount = 5;
+let promise = createOrder(orderedCount);
+
+promise
+    .then((order) => console.log(`Спасибо за ${order.length} бургеров!`))
+    .catch((error) => console.log(`Простите но тут ${error.message}`))
