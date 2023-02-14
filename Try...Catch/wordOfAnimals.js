@@ -71,6 +71,15 @@ class Nature {
     constructor() {
         this.wildNature = []
     }
+    get howManyGrasses() {
+        return this.wildNature.filter(item => item instanceof Grass).length
+    }
+    get howManyPredators() {
+        return this.wildNature.filter(item => item instanceof Predator).length
+    }
+    get howManyHerbivores() {
+        return this.wildNature.filter(item => item instanceof Herbivore).length
+    }
     pushThemUp() {
         let populationOfPredators = this.generateRandomNumber(1, 5)
         let populationOfHerbivores = this.generateRandomNumber(5, 15)
@@ -91,7 +100,6 @@ class Nature {
         for (let i = 0; i < populationOfGrasses; i++) {
             this.wildNature.push(new Grass(i))
         }
-
         this.sort()
         this.statistics()
         this.fight()
@@ -102,12 +110,9 @@ class Nature {
         return Math.floor(Math.random() * (maxNumber - minNumber) + minNumber)
     }
     statistics() {
-        let howManyGrasses = this.wildNature.filter(item => item instanceof Grass).length
-        let howManyPredators = this.wildNature.filter(item => item instanceof Predator).length
-        let howManyHerbivores = this.wildNature.filter(item => item instanceof Herbivore).length
-        console.log(`травы : ${howManyGrasses} штук`)
-        console.log(`хищников : ${howManyPredators} штук`)
-        console.log(`травоядных : ${howManyHerbivores} штук`)
+        console.log(`травы : ${this.howManyGrasses} штук`)
+        console.log(`хищников : ${this.howManyPredators} штук`)
+        console.log(`травоядных : ${this.howManyHerbivores} штук`)
 
         let natureView = this.wildNature.map((creature) => creature.name)
         console.log(natureView)
@@ -141,7 +146,7 @@ class Nature {
                 this.wildNature.splice(i - 1, 1)
             }
             // Обьяв. переменная , условие , шаг , тело цикла
-            // Каждый шаг выполняется тело цикла 
+            // Каждый шаг выполняется тело цикла
             // Цикл заканчивается когда условие выдаст фалсе
             // В ифе проверяется находится ли животное сосед за пределами массива, проверяет может ли его сьесть
         }
@@ -154,16 +159,13 @@ class Nature {
         this.wildNature.sort(() => Math.random() - 0.5)
     }
     showResult() {
-        let howManyGrasses = this.wildNature.filter(item => item instanceof Grass).length
-        let howManyPredators = this.wildNature.filter(item => item instanceof Predator).length
-        let howManyHerbivores = this.wildNature.filter(item => item instanceof Herbivore).length
-        if (howManyPredators > howManyGrasses && howManyPredators > howManyHerbivores) {
+        if (this.howManyPredators > this.howManyGrasses && this.howManyPredators > this.howManyHerbivores) {
             console.log(`победили хищники`)
         }
-        if (howManyGrasses > howManyPredators && howManyGrasses > howManyHerbivores) {
+        if (this.howManyGrasses > this.howManyPredators && this.howManyGrasses > this.howManyHerbivores) {
             console.log(`победили травы`)
         }
-        if (howManyHerbivores > howManyGrasses && howManyHerbivores > howManyPredators) {
+        if (this.howManyHerbivores > this.howManyGrasses && this.howManyHerbivores > this.howManyPredators) {
             console.log(`победили травоядные`)
         }
     }
@@ -189,12 +191,8 @@ class Herbivore {
     get name() {
         return this._name
     }
-    canEat(canIeat) {
-        if (canIeat instanceof Grass) {
-            return true
-        } else {
-            return false
-        }
+    canEat(victim) {
+        return victim instanceof Grass
     }
 }
 class Predator {
@@ -205,15 +203,11 @@ class Predator {
     get name() {
         return this._name
     }
-    canEat(canIeat) {
-        // принимает аргумент элемента соседа по массиву 
+    canEat(victim) {
+        // принимает аргумент элемента соседа по массиву
         // проверяет его на наследство от конкретного класса
         // возвращает тру или фалсе
-        if (canIeat instanceof Herbivore) {
-            return true
-        } else {
-            return false
-        }
+        return victim instanceof Herbivore
     }
 }
 const nature = new Nature()
