@@ -161,12 +161,12 @@ class Nature {
     showResult() {
         if (this.howManyPredators > this.howManyGrasses && this.howManyPredators > this.howManyHerbivores) {
             console.log(`победили хищники`)
-        }
-        if (this.howManyGrasses > this.howManyPredators && this.howManyGrasses > this.howManyHerbivores) {
+        } else if (this.howManyGrasses > this.howManyPredators && this.howManyGrasses > this.howManyHerbivores) {
             console.log(`победили травы`)
-        }
-        if (this.howManyHerbivores > this.howManyGrasses && this.howManyHerbivores > this.howManyPredators) {
+        } else if (this.howManyHerbivores > this.howManyGrasses && this.howManyHerbivores > this.howManyPredators) {
             console.log(`победили травоядные`)
+        } else {
+            console.log(`ничья`)
         }
     }
 }
