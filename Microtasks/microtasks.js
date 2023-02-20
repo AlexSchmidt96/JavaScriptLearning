@@ -19,7 +19,7 @@
 
 // console.log('End')   // Синхронный код (3) 'End'
 
-// console.log('p2 =>>', p2) // Синхронный код (4) 'p2 =>>' Promise * потому что  p = new Promise((resolve, reject) => {})
+// console.log('p2 =>>', p2) // Синхронный код (4) 'p2 =>>' Promise * потому что  p2 = new Promise((resolve, reject) => {})
 
 
 // console.log('script start'); // Синхронный код  (1) 'script start'
