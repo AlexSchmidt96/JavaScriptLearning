@@ -9,53 +9,48 @@
 // 2. Логист ищет свободную машину 
 // 3. Логист спрашивает машину может ли он взять заказ 
 // 4. Если машина больше взять заказ не может, логист ищет другую машину
-// ** Когда не смогу положить груз в машину то она поедет сама
 // ** orders Инкапусляция! 
 // ** Придумать что нибудь с условиями создания машин для загрузки
 // ** Придумать как сравнивать максимальный вес с имеющимся и потом принимать решение о загрузке машины
 // ** 1 заказ не обрабатывается! (когда он проверяет массив и не находит машину он выбрасывает заказ в помойку!)
 // ** Добавить новый массив со значением на выполнении заказа  и по нему итерироваться ????
+// ** Проверка не должна быть всех машин а только актуальной!
+// ** Разобраться с нумерацией , она добавляется всем машинам одновременно а надо чтобы по отдельности!
+// ** Номер добавляется когда машина приезжает в парк логистом
 
 
 class Logist {
     constructor(maxWeight) {
         this.maxWeight = maxWeight
         this.carPark = []
-        this.carOnMission = []
-
     }
     add(order) {
-        debugger
         if (this.carPark.length === 0) {
-            this.carPark.push(new Truck(this.maxWeight))
-            console.log('Жду приемки заказа')
-            this.carPark.forEach((truck) => {
-                if (truck.weight < this.maxWeight) {
-                    truck.weight += order.weight
-                    truck.orders.push(order)
-                }
-                else {
-                    console.log('я поехал')
-                }
-            })
+            this.carPark.push(new Truck())
+            for (let i = 0; i < this.carPark.length; i++) {
+                // console.log('Жду приемки заказа')
+                this.carPark[i].num = this.carPark.length // номер машины зависит от времени заезда в парк! Машина приехавшая первой, становится 1ым номером и тд
+                this.carPark[i].weight += order.weight
+                this.carPark[i].orders.push(order)
+            }
         } else if (this.carPark.length > 0) {
-            this.carPark.forEach((truck) => {
-                if (truck.weight + order.weight > this.maxWeight) {
-                    console.log('я поехал')
-                    this.carOnMission.push(truck)
+            for (let i = this.carPark.length - 1; i < this.carPark.length; i++) {
+                if (this.carPark[i].weight + order.weight > this.maxWeight) {
+                    this.carPark.push(new Truck())
+                    // console.log('Вызываю новую машину')
                 }
                 else {
-                    console.log('Допринимаю еще заказ')
-                    truck.weight += order.weight
-                    truck.orders.push(order)
+                    this.carPark[i].weight += order.weight
+                    this.carPark[i].orders.push(order)
+                    this.carPark[i].num = this.carPark.length
                 }
-            })
+            }
         }
-        console.log(this.carPark)
+        // console.log(this.carPark)
     }
     *[Symbol.iterator]() {
-        for (let i = 0; i < this.carOnMission.length; i++) {
-            yield this.carOnMission[i]
+        for (let i = 0; i < this.carPark.length; i++) {
+            yield this.carPark[i]
         }
     }
 }
@@ -66,19 +61,19 @@ class Order {
         this.weight = weight
     }
 }
-
 class Truck {
-    constructor(maxWeight) {
+    constructor() {
         this.weight = 0
-        this.maxWeight = maxWeight
         this.orders = []
+        this.num = 0
     }
     show() {
-        console.log(`Машина №${this.num} (общий вес груза ${this.weight} т):
-           Заказ #${this.orders}  ${this.orders}т`)
+        console.log(`Машина №${this.num} (общий вес груза ${this.weight}т): `)
+        for (let i = 0; i < this.orders.length; i++) {
+            console.log(` Заказ #${this.orders[i].num}  ${this.orders[i].weight}т`)
+        }
     }
 }
-
 
 
 
@@ -93,9 +88,12 @@ logist.add(new Order(4, 4));
 logist.add(new Order(5, 1));
 logist.add(new Order(6, 2));
 
+
 for (const truck of logist) {
     truck.show();
 }
+
+
 // должен вывести
 
 // Машина №1 (общий вес груза 7т):
