@@ -5,13 +5,15 @@ class AtmMachine {
         this.balance = 0
     }
     requestPin() {
-
+        let pinMessage = +prompt('Введите ПИН-код', '')
+        let count = 0
         while (true) {
-            let pinMessage = +prompt('Введите ПИН-код', '')
+            count++
             if (pinMessage === 1234) {
                 this.showMainTitle()
-            } else if (pinMessage === null || pinMessage === undefined) {
-                return false
+            } else if (count === 3) {
+                alert('Доступ заблокирован')
+                break
             }
         }
     }
