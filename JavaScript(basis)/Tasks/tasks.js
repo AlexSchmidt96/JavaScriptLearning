@@ -26,26 +26,16 @@ class Logist {
     }
     add(order) {
         if (this.carPark.length === 0) {
-            this.carPark.push(new Truck())
-            for (let i = 0; i < this.carPark.length; i++) {
-                // console.log('Жду приемки заказа')
-                this.carPark[i].num = this.carPark.length // номер машины зависит от времени заезда в парк! Машина приехавшая первой, становится 1ым номером и тд
-                this.carPark[i].weight += order.weight
-                this.carPark[i].orders.push(order)
-            }
-        } else if (this.carPark.length > 0) {
-            for (let i = this.carPark.length - 1; i < this.carPark.length; i++) {
-                if (this.carPark[i].weight + order.weight > this.maxWeight) {
-                    this.carPark.push(new Truck())
-                    // console.log('Вызываю новую машину')
-                }
-                else {
-                    this.carPark[i].weight += order.weight
-                    this.carPark[i].orders.push(order)
-                    this.carPark[i].num = this.carPark.length
-                }
-            }
+            this.carPark.push(new Truck(1))
+            // console.log('Жду приемки заказа')
         }
+        let latestCar = this.carPark[this.carPark.length - 1]
+        if (latestCar.weight + order.weight > this.maxWeight) {
+            latestCar = new Truck(this.carPark.length + 1)
+            this.carPark.push(latestCar)
+            // console.log('Вызываю новую машину')
+        }
+        latestCar.load(order)
         // console.log(this.carPark)
     }
     *[Symbol.iterator]() {
@@ -62,16 +52,20 @@ class Order {
     }
 }
 class Truck {
-    constructor() {
+    constructor(num) {
         this.weight = 0
         this.orders = []
-        this.num = 0
+        this.num = num
     }
     show() {
         console.log(`Машина №${this.num} (общий вес груза ${this.weight}т): `)
         for (let i = 0; i < this.orders.length; i++) {
             console.log(` Заказ #${this.orders[i].num}  ${this.orders[i].weight}т`)
         }
+    }
+    load(order) {
+        this.orders.push(order)
+        this.weight += order.weight
     }
 }
 
