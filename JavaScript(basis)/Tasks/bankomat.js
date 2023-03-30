@@ -1,87 +1,96 @@
 'use strict'
-// При вводе 0(falsy значение) программа завершается 
-// При вводе "" (falsy значение) программа завершается 
+// При вводе 0 (falsy значение) программа завершается check
+// При вводе "" (falsy значение) программа завершается  check
+// Поставить "Закончить операцию" при недостатке средсва для снятия  check
+// Переделать while requestPin -> for  check
+// Переделать на строковый промпт и явные нул и андеванд  check
+// Реализовать класс Карта 
+// Рекурсировать маинТайтле check
+// "печатать чек" после каждой операции   check
+// Проверка на отрицательные числа! check
+
+// Проверка 
+// 1.  Отмена
+// 2.  Не тот тип данных
+// 3.  Нужный тип но некорректный
+
 class AtmMachine {
     constructor() {
         this.balance = 0
     }
     requestPin() {
         let count = 0
-        while (true) {
-            const pinMessage = +prompt('Введите ПИН-код', '')
+        for (let i = 0; i <= 2; i++) {
             count++
-            if (pinMessage === 1234) {
+            const value = prompt('Введите ПИН-код', '')
+            if (value === null || value === undefined) {
+                const message = confirm('Вы хотите завершить обслуживание?')
+                if (!message) {
+                    this.requestPin()
+                }
+                break
+            } else if (value !== String(value)) {
+                alert('Введите корректное значение!')
+            } else if (value !== "1234") {
+                alert('Неверный пин код')
+            } else {
                 this.showMainTitle()
                 break
-            } else if (count === 3) {
-                alert('Доступ заблокирован')
-                break
-            } else if (pinMessage == false) {
-                this.shutDown()
-                break
-            } else {
-                alert('Пин-код неверен')
             }
+        }
+        if (count === 3) {
+            alert('Доступ заблокирован')
         }
     }
     showMainTitle() {
-        while (true) {
-            const showMainTitleMessage = +prompt('Пожалуйста введите цифру команды. Вам доступны команды: 1-"Снять", 2-"Пополнить", 3-"Показать".', "")
-            if (showMainTitleMessage === 3) {
-                this.showBalance()
-                break
-            } else if (showMainTitleMessage === 2) {
-                this.topUpPayment()
-                break
-            } else if (showMainTitleMessage === 1) {
-                this.withdraw()
-                break
-            } else if (showMainTitleMessage == false) {
-                this.shutDown()
-                break
-            } else {
-                alert('Введите корректное значение!')
-            }
+        const value = prompt('Пожалуйста введите цифру команды. Вам доступны команды: 1-"Снять", 2-"Пополнить", 3-"Показать".', "")
+        if (value === null || value === undefined) {
+            this.shutDown()
+        } else if (value === "3") {
+            this.showBalance()
+        } else if (value === "2") {
+            this.topUp()
+        } else if (value === "1") {
+            this.withdraw()
+        } else {
+            alert('Введите корректное значение!')
+            this.showMainTitle()
         }
     }
     showBalance() {
         alert(`Ваш баланс счета равен ${this.balance} руб.`)
         this.shutDown()
     }
-    topUpPayment() {
-        while (true) {
-            const topUpPaymentMessage = +prompt('Введите сумму для пополнения счета, сумма указана в руб.', '')
-            if (topUpPaymentMessage == false) {
-                this.shutDown()
-                break
-            } else if (topUpPaymentMessage) {
-                this.balance += topUpPaymentMessage
-                alert(`Ваш баланс счета пополнен , ваш баланс счета равен ${this.balance} руб.`)
-                this.shutDown()
-                break
-            } else {
-                alert('Введите корректное значение!')
-            }
+    topUp() {
+        const value = prompt('Введите сумму для пополнения счета, сумма указана в руб.', '')
+        if (value === null || value === undefined) {
+            this.shutDown()
+        } else if (value === String(value) && +value > "0") {
+            this.balance += +value
+            alert(`Ваш баланс счета пополнен`)
+            this.showCheck()
+        } else {
+            alert('Введите корректное значение!')
+            this.topUp()
         }
     }
     withdraw() {
-        while (true) {
-            const withdrawMessage = +prompt('Ведите сумму для снятия денег с Вашего счета, сумма указана в руб.', '')
-            if (withdrawMessage > this.balance) {
+        const value = prompt('Ведите сумму для снятия денег с Вашего счета, сумма указана в руб.', '')
+        if (value === null || value === undefined) {
+            this.shutDown()
+        } else if (value === String(value) && +value > "0") {
+            if (+value > this.balance) {
                 alert('Превышен лимит снятия со счета!')
-            } else if (withdrawMessage == false) {
                 this.shutDown()
-                break
-            } else if (withdrawMessage) {
-                this.balance -= withdrawMessage
-                alert(`Операция завершена, ваш баланс счета равен ${this.balance} руб.`)
-                this.shutDown()
-                break
             } else {
-                alert('Введите корректное значение!')
+                this.balance -= value
+                alert(`Операция завершена`)
+                this.showCheck()
             }
+        } else {
+            alert('Введите корректное значение!')
+            this.withdraw()
         }
-
     }
     shutDown() {
         const shutDownMessage = confirm('Вы хотите завершить обслуживание?')
@@ -91,9 +100,14 @@ class AtmMachine {
             this.showMainTitle()
         }
     }
+    showCheck() {
+        const ask = confirm('Печатать чек?')
+        if (ask) {
+            alert(`ваш баланс счета равен ${this.balance} руб.`)
+        }
+        this.shutDown()
+    }
 }
 
-
 const atm = new AtmMachine()
-
 atm.requestPin()
