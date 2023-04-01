@@ -16,7 +16,17 @@
 
 class AtmMachine {
     constructor() {
-        this.balance = 0
+        this.cardReader = []
+    }
+    insert(card) {
+        this.cardReader.push(card)
+        // console.log(this.cardReader) // карта вставлена 
+        try {
+            this.cardReader.checkNumber()
+            this.requestPin()
+        } catch (error) {
+            alert('Карта не распознана!')
+        }
     }
     requestPin() {
         let count = 0
@@ -29,8 +39,6 @@ class AtmMachine {
                     this.requestPin()
                 }
                 break
-            } else if (value !== String(value)) {
-                alert('Введите корректное значение!')
             } else if (value !== "1234") {
                 alert('Неверный пин код')
             } else {
@@ -109,5 +117,34 @@ class AtmMachine {
     }
 }
 
+function getRandomNumber(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+class Card {
+    constructor() {
+        this.balance = 0
+        this.cardNumber = []
+        this.pinCode = 1234
+    }
+    generateNumber() {
+        for (let i = 0; i < 16; i++) {
+            let randomNum = getRandomNumber(0, 10)
+            this.cardNumber.push(randomNum)
+        }
+        console.log(this.cardNumber)
+    }
+    checkNumber() {
+        if (this.cardNumber.length === 16) {
+        } else {
+            throw new Error('Вставьте карту правильной стороной!')
+        }
+    }
+}
+const card = new Card()
+
+card.generateNumber()
 const atm = new AtmMachine()
-atm.requestPin()
+atm.insert(card)
