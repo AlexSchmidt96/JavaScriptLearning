@@ -17,15 +17,19 @@
 class AtmMachine {
     constructor() {
         this.cardReader = []
+        this.atmCard = this.cardReader[this.cardReader.length - 1]
     }
     insert(card) {
+        // if(this.cardReader.length > 1) {
+
+        // }
         this.cardReader.push(card)
         // console.log(this.cardReader) // карта вставлена 
         try {
-            this.cardReader.checkNumber()
+            this.atmCard.check()
             this.requestPin()
         } catch (error) {
-            alert('Карта не распознана!')
+            alert(error.message)
         }
     }
     requestPin() {
@@ -39,7 +43,7 @@ class AtmMachine {
                     this.requestPin()
                 }
                 break
-            } else if (value !== "1234") {
+            } else if (value !== this.atmCard.pinCode) {
                 alert('Неверный пин код')
             } else {
                 this.showMainTitle()
@@ -66,7 +70,7 @@ class AtmMachine {
         }
     }
     showBalance() {
-        alert(`Ваш баланс счета равен ${this.balance} руб.`)
+        alert(`Ваш баланс счета равен ${this.atmCard.balance} руб.`)
         this.shutDown()
     }
     topUp() {
@@ -74,7 +78,7 @@ class AtmMachine {
         if (value === null || value === undefined) {
             this.shutDown()
         } else if (value === String(value) && +value > "0") {
-            this.balance += +value
+            this.atmCard.balance += +value
             alert(`Ваш баланс счета пополнен`)
             this.showCheck()
         } else {
@@ -87,11 +91,11 @@ class AtmMachine {
         if (value === null || value === undefined) {
             this.shutDown()
         } else if (value === String(value) && +value > "0") {
-            if (+value > this.balance) {
+            if (+value > this.atmCard.balance) {
                 alert('Превышен лимит снятия со счета!')
                 this.shutDown()
             } else {
-                this.balance -= value
+                this.atmCard.balance -= value
                 alert(`Операция завершена`)
                 this.showCheck()
             }
@@ -111,7 +115,7 @@ class AtmMachine {
     showCheck() {
         const ask = confirm('Печатать чек?')
         if (ask) {
-            alert(`ваш баланс счета равен ${this.balance} руб.`)
+            alert(`ваш баланс счета равен ${this.atmCard.balance} руб.`)
         }
         this.shutDown()
     }
@@ -127,7 +131,7 @@ class Card {
     constructor() {
         this.balance = 0
         this.cardNumber = []
-        this.pinCode = 1234
+        this.pinCode = '1234'
     }
     generateNumber() {
         for (let i = 0; i < 16; i++) {
@@ -136,9 +140,8 @@ class Card {
         }
         console.log(this.cardNumber)
     }
-    checkNumber() {
-        if (this.cardNumber.length === 16) {
-        } else {
+    check() {
+        if (this.cardNumber.length !== 16) {
             throw new Error('Вставьте карту правильной стороной!')
         }
     }
