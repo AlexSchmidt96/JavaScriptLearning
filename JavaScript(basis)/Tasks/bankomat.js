@@ -4,7 +4,7 @@
 // Поставить "Закончить операцию" при недостатке средсва для снятия  check
 // Переделать while requestPin -> for  check
 // Переделать на строковый промпт и явные нул и андеванд  check
-// Реализовать класс Карта 
+// Реализовать класс Карта  check
 // Рекурсировать маинТайтле check
 // "печатать чек" после каждой операции   check
 // Проверка на отрицательные числа! check
@@ -17,16 +17,12 @@
 class AtmMachine {
     constructor() {
         this.cardReader = []
-        this.atmCard = this.cardReader[this.cardReader.length - 1]
     }
     insert(card) {
-        // if(this.cardReader.length > 1) {
-
-        // }
         this.cardReader.push(card)
-        // console.log(this.cardReader) // карта вставлена 
+        // console.log(this.cardReader) // карта вставлена
         try {
-            this.atmCard.check()
+            this.cardReader[this.cardReader.length - 1].check()
             this.requestPin()
         } catch (error) {
             alert(error.message)
@@ -43,7 +39,7 @@ class AtmMachine {
                     this.requestPin()
                 }
                 break
-            } else if (value !== this.atmCard.pinCode) {
+            } else if (value !== this.cardReader[this.cardReader.length - 1].pinCode) {
                 alert('Неверный пин код')
             } else {
                 this.showMainTitle()
@@ -70,7 +66,7 @@ class AtmMachine {
         }
     }
     showBalance() {
-        alert(`Ваш баланс счета равен ${this.atmCard.balance} руб.`)
+        alert(`Ваш баланс счета равен ${this.cardReader[this.cardReader.length - 1].balance} руб.`)
         this.shutDown()
     }
     topUp() {
@@ -78,7 +74,7 @@ class AtmMachine {
         if (value === null || value === undefined) {
             this.shutDown()
         } else if (value === String(value) && +value > "0") {
-            this.atmCard.balance += +value
+            this.cardReader[this.cardReader.length - 1].balance += +value
             alert(`Ваш баланс счета пополнен`)
             this.showCheck()
         } else {
@@ -91,11 +87,11 @@ class AtmMachine {
         if (value === null || value === undefined) {
             this.shutDown()
         } else if (value === String(value) && +value > "0") {
-            if (+value > this.atmCard.balance) {
+            if (+value > this.cardReader[this.cardReader.length - 1].balance) {
                 alert('Превышен лимит снятия со счета!')
                 this.shutDown()
             } else {
-                this.atmCard.balance -= value
+                this.cardReader[this.cardReader.length - 1].balance -= value
                 alert(`Операция завершена`)
                 this.showCheck()
             }
@@ -115,7 +111,7 @@ class AtmMachine {
     showCheck() {
         const ask = confirm('Печатать чек?')
         if (ask) {
-            alert(`ваш баланс счета равен ${this.atmCard.balance} руб.`)
+            alert(`ваш баланс счета равен ${this.cardReader[this.cardReader.length - 1].balance} руб.`)
         }
         this.shutDown()
     }
@@ -135,7 +131,7 @@ class Card {
     }
     generateNumber() {
         for (let i = 0; i < 16; i++) {
-            let randomNum = getRandomNumber(0, 10)
+            let randomNum = getRandomNumber(0, 9)
             this.cardNumber.push(randomNum)
         }
         console.log(this.cardNumber)
@@ -147,7 +143,6 @@ class Card {
     }
 }
 const card = new Card()
-
-card.generateNumber()
 const atm = new AtmMachine()
+card.generateNumber()
 atm.insert(card)
