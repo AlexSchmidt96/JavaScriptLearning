@@ -16,104 +16,122 @@
 
 class AtmMachine {
     constructor() {
-        this.cardReader = []
+        this.card = undefined
     }
     insert(card) {
-        this.cardReader.push(card)
-        // console.log(this.cardReader) // карта вставлена
+        this.card = card
         try {
-            this.cardReader[this.cardReader.length - 1].check()
-            this.requestPin()
+            this.checkCard()
+            this.checkPin()
+            this.showMainTitle()
         } catch (error) {
             alert(error.message)
         }
+        this.card = undefined
     }
-    requestPin() {
+    checkPin() {
         let count = 0
-        for (let i = 0; i <= 2; i++) {
-            count++
+        while (count < 3) {
             const value = prompt('Введите ПИН-код', '')
-            if (value === null || value === undefined) {
-                const message = confirm('Вы хотите завершить обслуживание?')
-                if (!message) {
-                    this.requestPin()
+            if (value == null) {
+                const isExit = confirm('Вы хотите завершить обслуживание?')
+                if (isExit) {
+                    throw new Error('Завершение работы')
                 }
-                break
-            } else if (value !== this.cardReader[this.cardReader.length - 1].pinCode) {
+            } else if (value !== this.card.pinCode) {
+                count++
                 alert('Неверный пин код')
             } else {
-                this.showMainTitle()
-                break
+                return;
             }
         }
-        if (count === 3) {
-            alert('Доступ заблокирован')
-        }
+        throw new Error('Доступ заблокирован')
     }
     showMainTitle() {
-        const value = prompt('Пожалуйста введите цифру команды. Вам доступны команды: 1-"Снять", 2-"Пополнить", 3-"Показать".', "")
-        if (value === null || value === undefined) {
+        const value = prompt('Пожалуйста введите цифру команды. Вам доступны команды: 1-"Снять деньги со счета", 2-"Пополнить счет", 3-"Показать баланс".', "")
+        if (value == null) {
             this.shutDown()
-        } else if (value === "3") {
-            this.showBalance()
-        } else if (value === "2") {
-            this.topUp()
-        } else if (value === "1") {
-            this.withdraw()
-        } else {
-            alert('Введите корректное значение!')
-            this.showMainTitle()
+            return;
+        }
+        switch (value) {
+            case '1':
+                this.withdraw()
+                break
+            case '2':
+                this.topUp()
+                break
+            case '3':
+                this.showBalance()
+                break
+            default:
+                alert('Введите корректное значение!')
+                this.showMainTitle()
         }
     }
     showBalance() {
-        alert(`Ваш баланс счета равен ${this.cardReader[this.cardReader.length - 1].balance} руб.`)
+        alert(`Ваш баланс счета равен ${this.card.balance} руб.`)
         this.shutDown()
     }
     topUp() {
         const value = prompt('Введите сумму для пополнения счета, сумма указана в руб.', '')
-        if (value === null || value === undefined) {
+        if (value == null) {
             this.shutDown()
-        } else if (value === String(value) && +value > "0") {
-            this.cardReader[this.cardReader.length - 1].balance += +value
-            alert(`Ваш баланс счета пополнен`)
-            this.showCheck()
-        } else {
+            return;
+        }
+        const amount = +value
+        if (this.isInvalidAmount(amount)) {
             alert('Введите корректное значение!')
             this.topUp()
+            return;
         }
+        this.card.balance += amount
+        alert(`Ваш баланс счета пополнен`)
+        this.showCheck()
     }
     withdraw() {
         const value = prompt('Ведите сумму для снятия денег с Вашего счета, сумма указана в руб.', '')
-        if (value === null || value === undefined) {
+        if (value == null) {
             this.shutDown()
-        } else if (value === String(value) && +value > "0") {
-            if (+value > this.cardReader[this.cardReader.length - 1].balance) {
-                alert('Превышен лимит снятия со счета!')
-                this.shutDown()
-            } else {
-                this.cardReader[this.cardReader.length - 1].balance -= value
-                alert(`Операция завершена`)
-                this.showCheck()
-            }
-        } else {
+            return;
+        }
+        const amount = +value
+        if (this.isInvalidAmount(amount)) {
             alert('Введите корректное значение!')
             this.withdraw()
+            return;
         }
+        if (amount > this.card.balance) {
+            alert('Превышен лимит снятия со счета!')
+            this.shutDown()
+            return;
+        }
+        this.card.balance -= amount
+        alert(`Операция завершена`)
+        this.showCheck()
     }
     shutDown() {
-        const shutDownMessage = confirm('Вы хотите завершить обслуживание?')
-        if (shutDownMessage) {
+        const isExit = confirm('Вы хотите завершить обслуживание?')
+        if (isExit) {
             alert('Завершение работы')
         } else {
             this.showMainTitle()
         }
     }
     showCheck() {
-        const ask = confirm('Печатать чек?')
-        if (ask) {
-            alert(`ваш баланс счета равен ${this.cardReader[this.cardReader.length - 1].balance} руб.`)
+        const isPrint = confirm('Печатать чек?')
+        if (isPrint) {
+            this.showBalance()
+            return;
         }
         this.shutDown()
+    }
+    checkCard() {
+        if (this.card.number.length !== 16) {
+            throw new Error('Вставьте карту правильной стороной!')
+        }
+    }
+    isInvalidAmount(amount) {
+        return isNaN(amount) || amount <= 0 || amount % 1 > 0
     }
 }
 
@@ -126,20 +144,15 @@ function getRandomNumber(min, max) {
 class Card {
     constructor() {
         this.balance = 0
-        this.cardNumber = []
+        this.number = this.generateNumber()
         this.pinCode = '1234'
     }
     generateNumber() {
+        let str = ''
         for (let i = 0; i < 16; i++) {
-            let randomNum = getRandomNumber(0, 9)
-            this.cardNumber.push(randomNum)
+            str += getRandomNumber(0, 9)
         }
-        console.log(this.cardNumber)
-    }
-    check() {
-        if (this.cardNumber.length !== 16) {
-            throw new Error('Вставьте карту правильной стороной!')
-        }
+        return str
     }
 }
 const card = new Card()
