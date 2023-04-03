@@ -33,9 +33,12 @@
     <script>
         function calendar(elem) {
             let date = new Date()
+            let year = date.getFullYear()
             let mounth = date.getMonth()
-            let day = date.getDate()
+            let day = date.getDay()
             let table = document.createElement('table')
+            let th = mounth + year
+            table.append(th)
             table = "<tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr><tr>"
             newCalendar.append(table)
 
