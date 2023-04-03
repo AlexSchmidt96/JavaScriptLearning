@@ -6,11 +6,45 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="dateAndTime.js"></script>
-    <title>Document</title>
+    <script src="calendar.js"></script>
+    <title>Date and time</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        td,
+        th {
+            border: 1px solid black;
+            padding: 3px;
+            text-align: center;
+        }
+
+        th {
+            font-weight: bold;
+            background-color: #E6E6E6;
+        }
+    </style>
 </head>
 
 <body>
 
+    <div id='newCalendar'></div>
+    <script>
+        function calendar(elem) {
+            let date = new Date()
+            let mounth = date.getMonth()
+            let day = date.getDate()
+            let table = document.createElement('table')
+            table = "<tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr><tr>"
+            newCalendar.append(table)
+
+
+
+
+        }
+        calendar(newCalendar)
+    </script>
 </body>
 
 </html>
