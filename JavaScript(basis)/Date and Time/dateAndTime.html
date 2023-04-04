@@ -24,6 +24,10 @@
             font-weight: bold;
             background-color: #E6E6E6;
         }
+
+        .tdColor {
+            color: red;
+        }
     </style>
 </head>
 
@@ -32,26 +36,49 @@
     <div id='newCalendar'></div>
     <script>
         function calendar(elem, year, month) {
-            let date = new Date()
-            let yearAndMonth = new Date(year, month - 1)
-            let currentDay = date.getDay()
-            let table = `<tr><th>${year}</th><th>${month}</th>
-                <tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr><tr>`
-            if (getWeekDay(yearAndMonth) !== 0) {
-                table += `<td> + ${currentDay} + <td>`
+
+            let monthIndex = month - 1;
+            let date = new Date(year, monthIndex);
+            let now = new Date();
+            let currDay = now.getDate();
+            let table = `<table><tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr><tr>`;
+            let yearAndMonth = `<table><tr><th>${year}г.</th><th>${month}</th></table>`
+
+            for (let i = 0; i < getWeekDayIndex(date); i++) {
+                table += '<td></td>';
             }
 
-            newCalendar.innerHTML = table
+            while (date.getMonth() === monthIndex) {
+                if (date.getDate() === currDay) {
+                    table += '<td class="tdColor">' + date.getDate() + '</td>'
+                } else {
+                    table += '<td>' + date.getDate() + '</td>';
+                }
 
-        }
-        function getWeekDay(yearAndMonth) {
-            let days = yearAndMonth.getDay()
-            if (date === 0) {
-                date = 7
+                if (getWeekDayIndex(date) == 6) {
+                    table += '</tr><tr>';
+                }
+
+                date.setDate(date.getDate() + 1);
             }
-            return days - 1
+
+            if (getWeekDayIndex(date) !== 0) {
+                for (let i = getWeekDayIndex(date); i < 7; i++) {
+                    table += '<td></td>';
+                }
+            }
+
+            table += '</tr></table>';
+            elem.innerHTML = table;
         }
-        calendar(newCalendar, 2023, 4)
+        function getWeekDayIndex(date) {
+            let days = date.getDay();
+            if (days === 0) {
+                days = 7;
+            }
+            return days - 1;
+        }
+        calendar(newCalendar, 2023, 4); 
     </script>
 </body>
 
