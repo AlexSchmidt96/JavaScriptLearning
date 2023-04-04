@@ -37,14 +37,18 @@
             let mounth = date.getMonth()
             let day = date.getDay()
             let table = document.createElement('table')
-            let th = mounth + year
-            table.append(th)
-            table = "<tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr><tr>"
-            newCalendar.append(table)
+            table = `<tr><th>${year}</th> <th>${mounth}
+                </th><tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr > <tr>`
 
 
+            newCalendar.innerHTML = table
 
-
+        }
+        function getWeekDay(date) {
+            if (date === 0) {
+                date === 7
+            }
+            return date
         }
         calendar(newCalendar)
     </script>
