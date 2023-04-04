@@ -31,26 +31,26 @@
 
     <div id='newCalendar'></div>
     <script>
-        function calendar(elem) {
+        function calendar(elem, year, month) {
             let date = new Date()
-            let year = date.getFullYear()
-            let mounth = date.getMonth()
-            let day = date.getDay()
+            let yearAndMonth = new Date(year, month)
+            let currentDay = date.getDay()
             let table = document.createElement('table')
-            table = `<tr><th>${year}</th> <th>${mounth}
-                </th><tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr > <tr>`
+            table = `<tr><th>${year}</th> <th>${month}
+                </th><tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr><tr>`
 
 
             newCalendar.innerHTML = table
 
         }
-        function getWeekDay(date) {
+        function getWeekDay(yearAndMonth) {
+            let days = yearAndMonth.getDay()
             if (date === 0) {
-                date === 7
+                date = 7
             }
-            return date
+            return days - 1
         }
-        calendar(newCalendar)
+        calendar(newCalendar, 2023, 4)
     </script>
 </body>
 
