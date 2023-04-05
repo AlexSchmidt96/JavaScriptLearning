@@ -28,6 +28,10 @@
         .tdColor {
             color: red;
         }
+
+        .tdMonth {
+            opacity: 50%;
+        }
     </style>
 </head>
 
@@ -39,13 +43,14 @@
 
             let monthIndex = month - 1;
             let date = new Date(year, monthIndex);
+            let lastDaysOfPrevMonth = new Date(year, monthIndex, 0).getDate()
+            let firstDaysOfNextMonth = new Date(year, monthIndex, 1).getDate()
             let now = new Date();
             let currDay = now.getDate();
             let table = `<table><tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr><tr>`;
-            let yearAndMonth = `<table><tr><th>${year}г.</th><th>${month}</th></table>`
 
             for (let i = 0; i < getWeekDayIndex(date); i++) {
-                table += '<td></td>';
+                table += `<td class = "tdMonth">${lastDaysOfPrevMonth + i - getWeekDayIndex(date) + 1}</td>`;
             }
 
             while (date.getMonth() === monthIndex) {
@@ -64,7 +69,7 @@
 
             if (getWeekDayIndex(date) !== 0) {
                 for (let i = getWeekDayIndex(date); i < 7; i++) {
-                    table += '<td></td>';
+                    table += `<td class = "tdMonth">${firstDaysOfNextMonth + i - getWeekDayIndex(date)}</td>`;
                 }
             }
 
