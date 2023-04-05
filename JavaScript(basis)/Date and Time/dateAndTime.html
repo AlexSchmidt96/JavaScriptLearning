@@ -50,7 +50,7 @@
             let table = `<table><tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr><tr>`;
 
             for (let i = 0; i < getWeekDayIndex(date); i++) {
-                table += `<td class = "tdMonth">${lastDaysOfPrevMonth + i - getWeekDayIndex(date) + 1}</td>`;
+                table += `<td class = "tdMonth">${lastDaysOfPrevMonth - getWeekDayIndex(date) + i + 1}</td>`;
             }
 
             while (date.getMonth() === monthIndex) {
@@ -60,7 +60,7 @@
                     table += '<td>' + date.getDate() + '</td>';
                 }
 
-                if (getWeekDayIndex(date) == 6) {
+                if (getWeekDayIndex(date) === 6) {
                     table += '</tr><tr>';
                 }
 
