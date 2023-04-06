@@ -41,8 +41,8 @@
     <script>
         function calendar(elem, year, month) {
             const months = ['ЯНВАРЬ', 'ФЕВРАЛЬ', 'МАРТ', 'АПРЕЛЬ', 'МАЙ', 'ИЮНЬ', 'ИЮЛЬ', 'АВГУСТ', 'СЕНТЯБРЬ', 'ОКТЯБРЬ', 'НОЯБРЬ', 'ДЕКАБРЬ']
-            const chevron_left = "<"
-            const chevron_right = ">"
+            const chevronLeft = "<"
+            const chevronRight = ">"
             const monthIndex = month - 1;
             let currYearMonthDate = new Date(year, monthIndex);
             let lastDaysOfPrevMonth = new Date(year, monthIndex, 0).getDate()
@@ -76,7 +76,7 @@
             }
 
             table += '</tr></table>';
-            elem.innerHTML = `<table><th> ${chevron_left} ${months[monthIndex]} ${year} ${chevron_right} ${table} </th></table>`;
+            elem.innerHTML = `<table><th> ${chevronLeft} ${months[monthIndex]} ${year} ${chevronRight} ${table} </th></table>`;
         }
 
         function getWeekDayIndex(currYearMonthDate) {
