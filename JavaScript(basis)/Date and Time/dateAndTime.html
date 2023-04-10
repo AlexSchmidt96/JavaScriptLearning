@@ -38,7 +38,9 @@
 <body>
     <div id='newCalendar'>
         <table>
-            ...
+            <caption></caption>
+            <thead></thead>
+            <tbody></tbody>
         </table>
     </div>
     <script>
@@ -79,21 +81,18 @@
                 date.setDate(date.getDate() + 1)
             }
 
-            elem.innerHTML = `
-                <table>
-                    <caption> < ${currMonth} ${year} > </caption>
-                    <thead>
-                        <tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr>${tbody}</tr>
-                    </tbody>
-                </table>
-            `;
-        }
+            const table = document.querySelector('table')
+            const caption = document.querySelector('caption')
+            caption.innerHTML = `< ${currMonth} ${year} >`
+            const thead = document.querySelector('thead')
+            thead.innerHTML = `<tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr>`
+            const tableBody = document.querySelector('tbody')
+            tableBody.innerHTML = `<tr>${tbody}</tr>`
 
+
+        }
         const calenderElement = document.getElementById('newCalendar')
-        calendar(calenderElement, 2023, 4); 
+        calendar(calenderElement, 2023, 4)
     </script>
 </body>
 
