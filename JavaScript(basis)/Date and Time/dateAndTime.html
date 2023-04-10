@@ -36,57 +36,64 @@
 </head>
 
 <body>
-
-    <div id='newCalendar'></div>
+    <div id='newCalendar'>
+        <table>
+            ...
+        </table>
+    </div>
     <script>
+        // 1. Статические части календаря - должны быть сразу в верстке (изначально)
+        // 2. Немного изменить алгоритм отрисовки: шагнуть до понедельника и начать рисовать строчки пока не нарисуем весь календарь
+
         function calendar(elem, year, month) {
-            const months = ['ЯНВАРЬ', 'ФЕВРАЛЬ', 'МАРТ', 'АПРЕЛЬ', 'МАЙ', 'ИЮНЬ', 'ИЮЛЬ', 'АВГУСТ', 'СЕНТЯБРЬ', 'ОКТЯБРЬ', 'НОЯБРЬ', 'ДЕКАБРЬ']
-            const chevronLeft = "<"
-            const chevronRight = ">"
+            const now = new Date();
+            const dateOptions = { month: 'long' }
             const monthIndex = month - 1;
-            let currYearMonthDate = new Date(year, monthIndex);
-            let lastDaysOfPrevMonth = new Date(year, monthIndex, 0).getDate()
-            let firstDaysOfNextMonth = new Date(year, monthIndex, 1).getDate()
-            let currDate = new Date();
-            let currDay = currDate.getDate();
-            let table = `<table><tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr><tr>`;
+            const date = new Date(year, monthIndex);
+            const currMonth = date.toLocaleDateString('ru-RU', dateOptions);
+            let tbody = ``
 
-            for (let i = 0; i < getWeekDayIndex(currYearMonthDate); i++) {
-                table += `<td class = "tdMonth">${lastDaysOfPrevMonth - (getWeekDayIndex(currYearMonthDate) - 1) + i}</td>`;
+            const prevMonth = new Date(date);
+            while (prevMonth.getDay() !== 1) {
+                prevMonth.setDate(prevMonth.getDate() - 1)
+                tbody = `<td class = "tdMonth">${prevMonth.getDate()}</td>` + tbody
             }
 
-            while (currYearMonthDate.getMonth() === monthIndex) {
-                if (currYearMonthDate.getDate() === currDay) {
-                    table += `<td class="tdColor">${currYearMonthDate.getDate()}</td>`
+            while (date.getMonth() === monthIndex) {
+                const isCurrentDay = date.getMonth() === now.getMonth() && date.getDate() === now.getDate();
+                if (isCurrentDay) {
+                    tbody += `<td class="tdColor">${date.getDate()}</td>`
                 } else {
-                    table += `<td>${currYearMonthDate.getDate()}</td>`;
+                    tbody += `<td>${date.getDate()}</td>`;
                 }
 
-                if (getWeekDayIndex(currYearMonthDate) === 6) {
-                    table += '</tr><tr>';
+                if (date.getDay() === 0) {
+                    tbody += '</tr><tr>';
                 }
 
-                currYearMonthDate.setDate(currYearMonthDate.getDate() + 1);
+                date.setDate(date.getDate() + 1);
             }
 
-            if (getWeekDayIndex(currYearMonthDate) !== 0) {
-                for (let i = getWeekDayIndex(currYearMonthDate); i < 7; i++) {
-                    table += `<td class = "tdMonth">${firstDaysOfNextMonth - getWeekDayIndex(currYearMonthDate) + i}</td>`;
-                }
+            while (date.getDay() !== 1) {
+                tbody += `<td class = "tdMonth">${date.getDate()}</td>`
+                date.setDate(date.getDate() + 1)
             }
 
-            table += '</tr></table>';
-            elem.innerHTML = `<table><th> ${chevronLeft} ${months[monthIndex]} ${year} ${chevronRight} ${table} </th></table>`;
+            elem.innerHTML = `
+                <table>
+                    <caption> < ${currMonth} ${year} > </caption>
+                    <thead>
+                        <tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>${tbody}</tr>
+                    </tbody>
+                </table>
+            `;
         }
 
-        function getWeekDayIndex(currYearMonthDate) {
-            let days = currYearMonthDate.getDay();
-            if (days === 0) {
-                days = 7;
-            }
-            return days - 1;
-        }
-        calendar(newCalendar, 2023, 4); 
+        const calenderElement = document.getElementById('newCalendar')
+        calendar(calenderElement, 2023, 4); 
     </script>
 </body>
 
