@@ -71,17 +71,14 @@
             }
 
             while (date.getMonth() !== monthIndex + 1 || date.getDay() !== 1) {
-                if (date.getMonth() === monthIndex) {
-                    const isCurrentDay = date.getMonth() === now.getMonth() && date.getDate() === now.getDate();
-                    if (isCurrentDay) {
-                        tbody += `<td class="tdColor">${date.getDate()}</td>`
-                    } else {
-                        tbody += `<td>${date.getDate()}</td>`;
-                    }
-                } else {
+                const isCurrentDay = date.getMonth() === now.getMonth() && date.getDate() === now.getDate();
+                if (date.getMonth() === monthIndex - 1 || date.getMonth() === monthIndex + 1) {
                     tbody += `<td class = "tdMonth">${date.getDate()}</td>`
+                } else if (date.getMonth() === monthIndex && isCurrentDay) {
+                    tbody += `<td class="tdColor">${date.getDate()}</td>`
+                } else {
+                    tbody += `<td>${date.getDate()}</td>`;
                 }
-
                 if (date.getDay() === 0) {
                     tbody += '</tr><tr>';
                 }
@@ -93,7 +90,7 @@
             tableBody.innerHTML = `<tr>${tbody}</tr>`
         }
         const calenderElement = document.getElementById('newCalendar')
-        calendar(calenderElement, 2023, 5)
+        calendar(calenderElement, 2023, 4)
     </script>
 </body>
 
