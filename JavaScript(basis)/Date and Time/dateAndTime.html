@@ -25,18 +25,18 @@
             background-color: #E6E6E6;
         }
 
-        .tdColor {
+        .currentDayCell {
             color: red;
         }
 
-        .tdMonth {
+        .notCurrentMonthCell {
             opacity: 50%;
         }
     </style>
 </head>
 
 <body>
-    <div id='newCalendar'>
+    <div id='calendar'>
         <table>
             <caption></caption>
             <thead>
@@ -74,12 +74,12 @@
                 if (date.getMonth() === monthIndex) {
                     const isCurrentDay = date.getMonth() === now.getMonth() && date.getDate() === now.getDate();
                     if (isCurrentDay) {
-                        tbody += `<td class="tdColor">${date.getDate()}</td>`
+                        tbody += `<td class="currentDayCell">${date.getDate()}</td>`
                     } else {
                         tbody += `<td>${date.getDate()}</td>`;
                     }
                 } else {
-                    tbody += `<td class = "tdMonth">${date.getDate()}</td>`
+                    tbody += `<td class = "notCurrentMonthCell">${date.getDate()}</td>`
                 }
                 if (date.getDay() === 0) {
                     tbody += '</tr><tr>';
@@ -91,8 +91,8 @@
             const tableBody = document.querySelector('tbody')
             tableBody.innerHTML = `<tr>${tbody}</tr>`
         }
-        const calenderElement = document.getElementById('newCalendar')
-        calendar(calenderElement, 2023, 5)
+        const calenderElement = document.getElementById('calendar')
+        calendar(calenderElement, 2023, 4)
     </script>
 </body>
 
