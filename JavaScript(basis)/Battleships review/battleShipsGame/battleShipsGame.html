@@ -20,12 +20,27 @@
         padding-bottom: 10px;
     }
 
+    #BattleArena {
+        display: flex;
+        justify-content: center;
+    }
+
+    #messageArea {
+        padding: 25px;
+    }
+
+
+
     table {
+        width: 300px;
+        height: 300px;
+        padding-left: 10px;
         border-collapse: collapse;
     }
 
     td,
     th {
+        width: 30px;
         border: 1px solid black;
         padding: 3px;
         text-align: center;
@@ -42,21 +57,103 @@
     <div id='BattleArena'>
         <div id='messageArea'>
             <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>A</th>
+                        <th>B</th>
+                        <th>C</th>
+                        <th>D</th>
+                        <th>E</th>
+                        <th>F</th>
+                        <th>G</th>
+                        <th>H</th>
+                        <th>I</th>
+                        <th>J</th>
+                    </tr>
+                </thead>
                 <tbody>
-                    <tr></tr>
+                </tbody>
+            </table>
+        </div>
+        <div id='messageArea'>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>A</th>
+                        <th>B</th>
+                        <th>C</th>
+                        <th>D</th>
+                        <th>E</th>
+                        <th>F</th>
+                        <th>G</th>
+                        <th>H</th>
+                        <th>I</th>
+                        <th>J</th>
+                    </tr>
+                </thead>
+                <tbody id='enemyPlace'>
                 </tbody>
             </table>
         </div>
     </div>
     <script>
         let tbody = ''
+        let count = 0
+        let j = 0
         for (let i = 0; i < 100; i++) {
-            let tr = document.createElement('tr')
+            if (count === 0) {
+                j++
+                tbody += `<th>${j}</th>`
+            }
             tbody += `<td></td>`
+            count++
+            if (count === 10) {
+                count = 0
+                tbody += `</tr><tr>`
+            }
         }
         const tableBody = document.querySelector('tbody')
-        tableBody.innerHTML = `<tr>${tbody}</tr>` 
+        tableBody.innerHTML = `<tr>${tbody}</tr>`
+        const tableBodyEnemy = document.getElementById('enemyPlace')
+        tableBodyEnemy.innerHTML = `<tr>${tbody}</tr>` 
     </script>
 </body>
 
 </html>
+<!-- function calendar(elem, year, month) {
+    const now = new Date();
+    const dateOptions = { month: 'long' }
+    const monthIndex = month - 1;
+    const date = new Date(year, monthIndex);
+    const currMonth = date.toLocaleDateString('ru-RU', dateOptions);
+    let tbody = ``
+
+    while (date.getDay() !== 1) {
+        date.setDate(date.getDate() - 1)
+    }
+
+    while (date.getMonth() !== monthIndex + 1 || date.getDay() !== 1) {
+        if (date.getMonth() === monthIndex) {
+            const isCurrentDay = date.getMonth() === now.getMonth() && date.getDate() === now.getDate();
+            if (isCurrentDay) {
+                tbody += `<td class="currentDayCell">${date.getDate()}</td>`
+            } else {
+                tbody += `<td>${date.getDate()}</td>`;
+            }
+        } else {
+            tbody += `<td class = "notCurrentMonthCell">${date.getDate()}</td>`
+        }
+        if (date.getDay() === 0) {
+            tbody += '</tr><tr>';
+        }
+        date.setDate(date.getDate() + 1);
+    }
+    const caption = document.querySelector('caption')
+    caption.innerHTML = `< ${currMonth} ${year} >`
+    const tableBody = document.querySelector('tbody')
+    tableBody.innerHTML = `<tr>${tbody}</tr>`
+}
+const calenderElement = document.getElementById('calendar')
+calendar(calenderElement, 2023, 4) -->
