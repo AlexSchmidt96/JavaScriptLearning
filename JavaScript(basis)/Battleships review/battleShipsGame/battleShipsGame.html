@@ -8,6 +8,12 @@
     <title>Battleship Arena</title>
 </head>
 <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
     h1 {
         display: flex;
         justify-content: center;
@@ -15,18 +21,20 @@
     }
 
     table {
-        position: absolute;
-        border-spacing: 0px;
+        min-height: 340px;
+        min-width: 340px;
     }
 
-    td {
-        width: 32px;
-        height: 32px;
+    #trCharts {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly
     }
 
     #trNums {
         display: flex;
-        align-items: center;
+        flex-direction: column;
+        align-items: flex-start;
     }
 </style>
 
@@ -35,11 +43,43 @@
     <div id='BattleArena'>
         <div id='messageArea'>
             <table>
+                <thead>
+                    <tr id='trCharts'>
+                        <th>A</th>
+                        <th>B</th>
+                        <th>C</th>
+                        <th>D</th>
+                        <th>E</th>
+                        <th>F</th>
+                        <th>G</th>
+                        <th>H</th>
+                        <th>I</th>
+                        <th>J</th>
+                    </tr>
+                    <tr id='trNums'>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>7</th>
+                        <th>8</th>
+                        <th>9</th>
+                        <th>10</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
             </table>
         </div>
     </div>
     <script>
-
+        let tbody = ''
+        let tr = document.querySelector('tr')
+        for (let i = 0; i < 10; i++) {
+            tr += `<td></td>`
+        }
+        tbody.innertHTML = `<tr>${tr}<tr>` 
     </script>
 </body>
 
