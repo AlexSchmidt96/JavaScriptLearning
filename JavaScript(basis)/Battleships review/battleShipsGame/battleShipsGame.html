@@ -21,8 +21,19 @@
     }
 
     table {
-        min-height: 340px;
-        min-width: 340px;
+        border-collapse: collapse;
+    }
+
+    td,
+    th {
+        border: 1px solid black;
+        padding: 3px;
+        text-align: center;
+    }
+
+    th {
+        font-weight: bold;
+        background-color: #E6E6E6;
     }
 </style>
 
@@ -32,15 +43,15 @@
         <div id='messageArea'>
             <table>
                 <tbody>
-
+                    <tr></tr>
                 </tbody>
             </table>
         </div>
     </div>
     <script>
         let tbody = ''
-        let tr = document.querySelector('tr')
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 100; i++) {
+            let tr = document.createElement('tr')
             tbody += `<td></td>`
         }
         const tableBody = document.querySelector('tbody')
