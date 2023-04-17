@@ -7,32 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="dateAndTime.js"></script>
     <script src="calendar.js"></script>
+    <link rel="stylesheet" href="calendar.css">
     <title>Date and time</title>
-    <style>
-        table {
-            border-collapse: collapse;
-        }
-
-        td,
-        th {
-            border: 1px solid black;
-            padding: 3px;
-            text-align: center;
-        }
-
-        th {
-            font-weight: bold;
-            background-color: #E6E6E6;
-        }
-
-        .currentDayCell {
-            color: red;
-        }
-
-        .notCurrentMonthCell {
-            opacity: 50%;
-        }
-    </style>
 </head>
 
 <body>
@@ -53,47 +29,6 @@
             <tbody></tbody>
         </table>
     </div>
-    <script>
-        // 1. Статические части календаря - должны быть сразу в верстке (изначально)
-        // 2. Немного изменить алгоритм отрисовки: шагнуть до понедельника и начать рисовать строчки пока не нарисуем весь календарь
-        // 3. Рисуем календарь пока не достигнем понедельника следующего месяца 
-
-        function calendar(elem, year, month) {
-            const now = new Date();
-            const dateOptions = { month: 'long' }
-            const monthIndex = month - 1;
-            const date = new Date(year, monthIndex);
-            const currMonth = date.toLocaleDateString('ru-RU', dateOptions);
-            let tbody = ``
-
-            while (date.getDay() !== 1) {
-                date.setDate(date.getDate() - 1)
-            }
-
-            while (date.getMonth() !== monthIndex + 1 || date.getDay() !== 1) {
-                if (date.getMonth() === monthIndex) {
-                    const isCurrentDay = date.getMonth() === now.getMonth() && date.getDate() === now.getDate();
-                    if (isCurrentDay) {
-                        tbody += `<td class="currentDayCell">${date.getDate()}</td>`
-                    } else {
-                        tbody += `<td>${date.getDate()}</td>`;
-                    }
-                } else {
-                    tbody += `<td class = "notCurrentMonthCell">${date.getDate()}</td>`
-                }
-                if (date.getDay() === 0) {
-                    tbody += '</tr><tr>';
-                }
-                date.setDate(date.getDate() + 1);
-            }
-            const caption = document.querySelector('caption')
-            caption.innerHTML = `< ${currMonth} ${year} >`
-            const tableBody = document.querySelector('tbody')
-            tableBody.innerHTML = `<tr>${tbody}</tr>`
-        }
-        const calenderElement = document.getElementById('calendar')
-        calendar(calenderElement, 2023, 4)
-    </script>
 </body>
 
 </html>
