@@ -97,25 +97,28 @@
         </div>
     </div>
     <script>
-        let tbody = ''
-        let count = 0
-        let j = 0
-        for (let i = 0; i < 100; i++) {
-            if (count === 0) {
-                j++
-                tbody += `<th>${j}</th>`
+        function battleship(friendElem, enemyElem) {
+            let tbody = ''
+            let count = 0
+            let j = 0
+            for (let i = 0; i < 100; i++) {
+                if (count === 0) {
+                    j++
+                    tbody += `<th>${j}</th>`
+                }
+                tbody += `<td></td>`
+                count++
+                if (count === 10) {
+                    count = 0
+                    tbody += `</tr><tr>`
+                }
             }
-            tbody += `<td></td>`
-            count++
-            if (count === 10) {
-                count = 0
-                tbody += `</tr><tr>`
-            }
+            tableBodyAlly.innerHTML = `<tr>${tbody}</tr>`
+            tableBodyEnemy.innerHTML = `<tr>${tbody}</tr>`
         }
-        const tableBodyAlly = document.getElementById('allyPlace')
-        tableBodyAlly.innerHTML = `<tr>${tbody}</tr>`
         const tableBodyEnemy = document.getElementById('enemyPlace')
-        tableBodyEnemy.innerHTML = `<tr>${tbody}</tr>` 
+        const tableBodyAlly = document.getElementById('allyPlace')
+        battleship(tableBodyAlly, tableBodyEnemy)
     </script>
 </body>
 
