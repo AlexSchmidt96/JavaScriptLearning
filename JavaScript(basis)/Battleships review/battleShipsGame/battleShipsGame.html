@@ -25,7 +25,7 @@
         justify-content: center;
     }
 
-    #messageArea {
+    .messageArea {
         padding: 25px;
     }
 
@@ -53,7 +53,7 @@
 <body>
     <h1>Battleship Arena</h1>
     <div id='BattleArena'>
-        <div id='messageArea'>
+        <div class='messageArea'>
             <table>
                 <thead>
                     <tr>
@@ -74,7 +74,7 @@
                 </tbody>
             </table>
         </div>
-        <div id='messageArea'>
+        <div class='messageArea'>
             <table>
                 <thead>
                     <tr>
@@ -97,7 +97,7 @@
         </div>
     </div>
     <script>
-        function battleship(friendElem, enemyElem) {
+        function createBattleshipArea(friendElem, enemyElem) {
             let tbody = ''
             let count = 0
             let j = 0
@@ -118,7 +118,12 @@
         }
         const tableBodyEnemy = document.getElementById('enemyPlace')
         const tableBodyAlly = document.getElementById('allyPlace')
-        battleship(tableBodyAlly, tableBodyEnemy)
+        createBattleshipArea(tableBodyAlly, tableBodyEnemy)
+
+        function createBattleships() {
+
+        }
+
     </script>
 </body>
 
