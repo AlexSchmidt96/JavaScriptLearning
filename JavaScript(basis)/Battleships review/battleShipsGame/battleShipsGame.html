@@ -97,6 +97,7 @@
         </div>
     </div>
     <script>
+        // переписать!
         function createBattleshipArea(friendElem, enemyElem) {
             let tbody = ''
             let count = 0
@@ -106,7 +107,11 @@
                     j++
                     tbody += `<th>${j}</th>`
                 }
-                tbody += `<td></td>`
+                if (i > 9) {
+                    tbody += `<td class = ${i}></td>`
+                } else {
+                    tbody += `<td class = 0${i}></td>`
+                }
                 count++
                 if (count === 10) {
                     count = 0
@@ -121,10 +126,30 @@
         createBattleshipArea(tableBodyAlly, tableBodyEnemy)
 
         function createBattleships() {
-
+            const ships = [{ name: 'Linkor', size: 4 },
+            { name: 'ship2', size: 3 },
+            { name: 'ship2', size: 3 },
+            { name: 'ship3', size: 2 },
+            { name: 'ship3', size: 2 },
+            { name: 'ship3', size: 2 },
+            { name: 'ship4', size: 1 },
+            { name: 'ship4', size: 1 },
+            { name: 'ship4', size: 1 },
+            { name: 'ship4', size: 1 },
+            ]
         }
 
     </script>
+    <!--1.Кораблей должно быть 10 
+1 корабль — ряд из 4 клеток («четырёхпалубный»; линкор)
+2 корабля — ряд из 3 клеток («трёхпалубные»; крейсера)
+3 корабля — ряд из 2 клеток («двухпалубные»; эсминцы)
+4 корабля — 1 клетка («однопалубные»; торпедные катера)
+        2.Они занимают клетки и должны иметь определенную длину , указанную в описании
+        3.Корабли должны размещаться рандомно по всему полю
+        4.Корабли не должны соприкасаться и наслаиваться друг на друга
+        5.Корабли не должны уходить за границы поля и вылезать с противопопложной стороны поля
+        6.Должен быть реестр кораблей-->
 </body>
 
 </html>
