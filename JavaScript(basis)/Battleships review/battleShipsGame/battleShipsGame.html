@@ -98,6 +98,22 @@
     </div>
     <script>
         // переписать!
+        function getRandomArbitrary(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min
+        }
+        let ships = [{ name: 'linkor', size: 4, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) }, // реестр с рандомной системой координат
+        { name: 'cruiser', size: 3, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'cruiser', size: 3, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'destroyer', size: 2, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'destroyer', size: 2, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'destroyer', size: 2, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        ]
         function createBattleshipArea(friendElem, enemyElem) {
             let tbody = ''
             let count = 0
@@ -125,20 +141,12 @@
         const tableBodyAlly = document.getElementById('allyPlace')
         createBattleshipArea(tableBodyAlly, tableBodyEnemy)
 
-        function createBattleships() {
-            const ships = [{ name: 'Linkor', size: 4 },
-            { name: 'ship2', size: 3 },
-            { name: 'ship2', size: 3 },
-            { name: 'ship3', size: 2 },
-            { name: 'ship3', size: 2 },
-            { name: 'ship3', size: 2 },
-            { name: 'ship4', size: 1 },
-            { name: 'ship4', size: 1 },
-            { name: 'ship4', size: 1 },
-            { name: 'ship4', size: 1 },
-            ]
-        }
 
+        function insert(elem) {
+            for (let i = 0; i < ships.length; i++) { // Ходим по реестру
+                ships[i] // забираем целый корабль
+            }
+        }
     </script>
     <!--1.Кораблей должно быть 10 
 1 корабль — ряд из 4 клеток («четырёхпалубный»; линкор)
@@ -150,6 +158,15 @@
         4.Корабли не должны соприкасаться и наслаиваться друг на друга
         5.Корабли не должны уходить за границы поля и вылезать с противопопложной стороны поля
         6.Должен быть реестр кораблей-->
+
+    <!-- Алгоритм размещения корабля 
+        1.Взять корабль из обьекта ships
+        2.Поместить на рандомную клетку самую главную часть корабля(нос)
+        3.Начать отступать по длине корабля в разные стороны(сторон всего 4: верх,вниз,влево,вправо) 
+        4.Если корабль упирается в границу поля, то прекращаем отступ(меняем место высадки на другую клетку?) и пробуем отступать в другую сторону
+        5.Смотрим не задеваем мы другой корабль (коллизия) иначе повторяем шаг 4 
+        6.Если все хорошо , то корабль оказывается на поле
+        7.Повторить с другими-->
 </body>
 
 </html>
