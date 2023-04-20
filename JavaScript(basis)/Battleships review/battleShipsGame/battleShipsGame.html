@@ -97,28 +97,14 @@
         </div>
     </div>
     <script>
-        // переписать!
-        function getRandomArbitrary(min, max) {
-            min = Math.ceil(min);
-            max = Math.floor(max);
-            return Math.floor(Math.random() * (max - min + 1)) + min
-        }
-        let ships = [{ name: 'linkor', size: 4, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) }, // реестр с рандомной системой координат
-        { name: 'cruiser', size: 3, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
-        { name: 'cruiser', size: 3, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
-        { name: 'destroyer', size: 2, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
-        { name: 'destroyer', size: 2, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
-        { name: 'destroyer', size: 2, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
-        { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
-        { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
-        { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
-        { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
-        ]
+        // переписать
         function createBattleshipArea(friendElem, enemyElem) {
             let tbody = ''
             let count = 0
-            let j = 0
+            let j = 0 // лишняя переменная , с которой что то надо делать!
+            // переписать цикл! 
             for (let i = 0; i < 100; i++) {
+                // множество непонятных случаев и проверок! переписать!
                 if (count === 0) {
                     j++
                     tbody += `<th>${j}</th>`
@@ -136,16 +122,52 @@
             }
             tableBodyAlly.innerHTML = `<tr>${tbody}</tr>`
             tableBodyEnemy.innerHTML = `<tr>${tbody}</tr>`
+            // ф-ция должна всегда что то возвращать!
         }
         const tableBodyEnemy = document.getElementById('enemyPlace')
         const tableBodyAlly = document.getElementById('allyPlace')
         createBattleshipArea(tableBodyAlly, tableBodyEnemy)
 
+        function getRandomArbitrary(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min
+        }
+        let ships = [{ x: 1, y: 1 }]
+        let sizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
 
-        function insert(elem) {
-            for (let i = 0; i < ships.length; i++) { // Ходим по реестру
-                ships[i] // забираем целый корабль
+        function insert(ships, size) {
+            try {
+                let x = getRandomArbitrary(1, 10)
+                let y = getRandomArbitrary(1, 10)
+                console.log(x, y)
+                if (canPut(ships, x, y) === false) {
+                    throw new Error('место занято другим кораблем')
+                }
+                console.log(`часть корабля поставлена на ${x} и ${y} координат `)
+            } catch (e) {
+                console.log(e.message)
+                console.log('переставляем')
+                insert(ships)
             }
+        }
+        function canPut(ships, x, y) {
+            for (let i = 0; i < ships.length; i++) {
+                if (x === ships[i].x && y === ships[i].y) {
+                    return false
+                }
+            }
+        }
+        // add ships
+        insert(ships)
+        for (let i = 0; i < 2; i++) {
+            insert(ships)
+        }
+        for (let i = 0; i < 3; i++) {
+            insert(ships)
+        }
+        for (let i = 0; i < 4; i++) {
+            insert(ships)
         }
     </script>
     <!--1.Кораблей должно быть 10 
@@ -161,12 +183,23 @@
 
     <!-- Алгоритм размещения корабля 
         1.Взять корабль из обьекта ships
-        2.Поместить на рандомную клетку самую главную часть корабля(нос)
+        2.Поместить на рандомную клетку часть корабля
         3.Начать отступать по длине корабля в разные стороны(сторон всего 4: верх,вниз,влево,вправо) 
         4.Если корабль упирается в границу поля, то прекращаем отступ(меняем место высадки на другую клетку?) и пробуем отступать в другую сторону
         5.Смотрим не задеваем мы другой корабль (коллизия) иначе повторяем шаг 4 
         6.Если все хорошо , то корабль оказывается на поле
         7.Повторить с другими-->
+
+    <!-- { name: 'linkor', size: 4, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) }, // реестр с рандомной системой координат
+        { name: 'cruiser', size: 3, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'cruiser', size: 3, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'destroyer', size: 2, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'destroyer', size: 2, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'destroyer', size: 2, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат -->
 </body>
 
 </html>
