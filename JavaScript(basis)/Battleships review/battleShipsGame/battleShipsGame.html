@@ -133,18 +133,23 @@
             max = Math.floor(max);
             return Math.floor(Math.random() * (max - min + 1)) + min
         }
-        let ships = [{ x: 1, y: 1 }]
+        let ships = []
         let sizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
 
         function insert(ships, size) {
             try {
                 let x = getRandomArbitrary(1, 10)
                 let y = getRandomArbitrary(1, 10)
-                console.log(x, y)
-                if (canPut(ships, x, y) === false) {
-                    throw new Error('место занято другим кораблем')
+                for (let i = 0; i < size; i++) {
+                    console.log(x, y)
+                    let obj = { coordinates: [{ xCoor: x }, { yCoor: y }] }
+                    ships.push(obj)
+                    if (!canPut(ships, x, y)) {
+                        throw new Error('место занято другим кораблем')
+                    }
+                    console.log(`часть корабля поставлена на ${x} и ${y} координат `)
+                    console.log(ships)
                 }
-                console.log(`часть корабля поставлена на ${x} и ${y} координат `)
             } catch (e) {
                 console.log(e.message)
                 console.log('переставляем')
@@ -153,21 +158,15 @@
         }
         function canPut(ships, x, y) {
             for (let i = 0; i < ships.length; i++) {
-                if (x === ships[i].x && y === ships[i].y) {
+                if (x === ships[i].coordinates[i].xCoor && y === ships[i].coordinates[i].yCoor) {
                     return false
                 }
             }
+            return true
         }
         // add ships
-        insert(ships)
-        for (let i = 0; i < 2; i++) {
-            insert(ships)
-        }
-        for (let i = 0; i < 3; i++) {
-            insert(ships)
-        }
-        for (let i = 0; i < 4; i++) {
-            insert(ships)
+        for (let i = 0; i < sizes.length; i++) {
+            insert(ships, sizes[i])
         }
     </script>
     <!--1.Кораблей должно быть 10 
@@ -200,6 +199,21 @@
         { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
         { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
         { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат -->
+
+    <!-- let num = getRandomArbitrary(1, 4)
+        if (num === 1) {
+            obj = { coordinates: [{ xCoor: x + 1 }, { yCoor: y }] }
+            ships.push(obj)
+        } else if (num === 2) {
+            obj = { coordinates: [{ xCoor: x - 1 }, { yCoor: y }] }
+            ships.push(obj)
+        } else if (num === 3) {
+            obj = { coordinates: [{ xCoor: x }, { yCoor: y - 1 }] }
+            ships.push(obj)
+        } else if (num === 4) {
+            obj = { coordinates: [{ xCoor: x }, { yCoor: y + 1 }] }
+            ships.push(obj)
+        } -->
 </body>
 
 </html>
