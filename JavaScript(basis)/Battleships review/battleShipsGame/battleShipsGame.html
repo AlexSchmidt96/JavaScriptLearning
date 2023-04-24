@@ -137,27 +137,41 @@
         let sizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
 
         function insert(ships, size) {
+            let x = getRandomArbitrary(1, 10)
+            let y = getRandomArbitrary(1, 10)
+            let num = getRandomArbitrary(1, 4)
             try {
-                let x = getRandomArbitrary(1, 10)
-                let y = getRandomArbitrary(1, 10)
                 for (let i = 0; i < size; i++) {
+                    let obj = { x: x, y: y }
                     console.log(x, y)
-                    let obj = { coordinates: [{ x: x, y: y }] }
                     if (!canPut(ships, x, y)) {
                         throw new Error('место занято другим кораблем')
                     }
                     console.log(`часть корабля поставлена на ${x} и ${y} координат `)
-                    console.log(ships)
+                    if (num === 1) {
+                        y -= 1
+                    } else if (num === 2) {
+                        y += 1
+                    } else if (num === 3) {
+                        x -= 1
+                    } else if (num === 4) {
+                        x += 1
+                    }
+                    if (x > 10 || x < 1 || y > 10 || y < 1) {
+                        throw new Error('выход за границу!')
+                    }
+                    ships.push(obj)
                 }
+                console.log(ships)
             } catch (e) {
                 console.log(e.message)
                 console.log('переставляем')
-                insert(ships)
+                insert(ships, size)
             }
         }
         function canPut(ships, x, y) {
             for (let i = 0; i < ships.length; i++) {
-                if (x === ships[i].coordinates[i].x && y === ships[i].coordinates[i].y) {
+                if (x === ships[i].x && y === ships[i].y) {
                     return false
                 }
             }
