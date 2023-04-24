@@ -140,12 +140,19 @@
             let x = getRandomArbitrary(1, 10)
             let y = getRandomArbitrary(1, 10)
             let num = getRandomArbitrary(1, 4)
+            let obj = []
             try {
                 for (let i = 0; i < size; i++) {
-                    let obj = { x: x, y: y }
+                    let coordinates = { x: x, y: y }
                     console.log(x, y)
+                    obj.push(coordinates)
+                    // проверка на корабль
                     if (!canPut(ships, x, y)) {
                         throw new Error('место занято другим кораблем')
+                    }
+                    // проверка границ
+                    if (x > 10 || x < 1 || y > 10 || y < 1) {
+                        throw new Error('выход за границу!')
                     }
                     console.log(`часть корабля поставлена на ${x} и ${y} координат `)
                     if (num === 1) {
@@ -157,11 +164,8 @@
                     } else if (num === 4) {
                         x += 1
                     }
-                    if (x > 10 || x < 1 || y > 10 || y < 1) {
-                        throw new Error('выход за границу!')
-                    }
-                    ships.push(obj)
                 }
+                ships.push(obj)
                 console.log(ships)
             } catch (e) {
                 console.log(e.message)
