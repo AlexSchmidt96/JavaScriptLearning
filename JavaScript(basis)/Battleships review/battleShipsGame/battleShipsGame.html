@@ -145,7 +145,7 @@
                 for (let i = 0; i < size; i++) {
                     let coordinates = { x: x, y: y }
                     console.log(x, y)
-                    obj.push(coordinates)
+
                     // проверка на корабль
                     if (!canPut(ships, x, y)) {
                         throw new Error('место занято другим кораблем')
@@ -154,6 +154,7 @@
                     if (x > 10 || x < 1 || y > 10 || y < 1) {
                         throw new Error('выход за границу!')
                     }
+                    obj.push(coordinates)
                     console.log(`часть корабля поставлена на ${x} и ${y} координат `)
                     if (num === 1) {
                         y -= 1
