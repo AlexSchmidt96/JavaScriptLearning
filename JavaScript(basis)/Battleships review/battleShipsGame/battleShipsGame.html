@@ -145,7 +145,6 @@
                 for (let i = 0; i < size; i++) {
                     let coordinates = { x: x, y: y }
                     console.log(x, y)
-
                     // проверка на корабль
                     if (!canPut(ships, x, y)) {
                         throw new Error('место занято другим кораблем')
