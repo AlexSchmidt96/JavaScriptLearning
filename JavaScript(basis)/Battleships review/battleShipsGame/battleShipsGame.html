@@ -100,28 +100,16 @@
         // переписать
         function createBattleshipArea(friendElem, enemyElem) {
             let tbody = ''
-            let count = 0
-            let j = 0 // лишняя переменная , с которой что то надо делать!
             // переписать цикл! 
-            for (let i = 0; i < 100; i++) {
-                // множество непонятных случаев и проверок! переписать!
-                if (count === 0) {
-                    j++
-                    tbody += `<th>${j}</th>`
+            for (let y = 1; y <= 10; y++) {
+                let tr = `<th>${y}</th>`
+                for (let x = 1; x <= 10; x++) {
+                    tr += `<td class="cell_${x}${y}"></td>`
                 }
-                if (i > 9) {
-                    tbody += `<td class = ${i}></td>`
-                } else {
-                    tbody += `<td class = 0${i}></td>`
-                }
-                count++
-                if (count === 10) {
-                    count = 0
-                    tbody += `</tr><tr>`
-                }
+                tbody += `<tr>${tr}</tr>`
             }
-            tableBodyAlly.innerHTML = `<tr>${tbody}</tr>`
-            tableBodyEnemy.innerHTML = `<tr>${tbody}</tr>`
+            tableBodyAlly.innerHTML = tbody
+            tableBodyEnemy.innerHTML = tbody
             // ф-ция должна всегда что то возвращать!
         }
         const tableBodyEnemy = document.getElementById('enemyPlace')
@@ -140,10 +128,9 @@
             let x = getRandomArbitrary(1, 10)
             let y = getRandomArbitrary(1, 10)
             let num = getRandomArbitrary(1, 4)
-            let obj = []
+            let coordinates = []
             try {
                 for (let i = 0; i < size; i++) {
-                    let coordinates = { x: x, y: y }
                     console.log(x, y)
                     // проверка на корабль
                     if (!canPut(ships, x, y)) {
@@ -153,8 +140,9 @@
                     if (x > 10 || x < 1 || y > 10 || y < 1) {
                         throw new Error('выход за границу!')
                     }
-                    obj.push(coordinates)
+                    coordinates.push({ x, y })
                     console.log(`часть корабля поставлена на ${x} и ${y} координат `)
+                    // проверка сторон
                     if (num === 1) {
                         y -= 1
                     } else if (num === 2) {
@@ -165,8 +153,8 @@
                         x += 1
                     }
                 }
-                ships.push(obj)
-                console.log(ships)
+                ships.push({ coordinates })
+                console.log('поставил корабль', coordinates.map(({ x, y }) => `${x},${y}`).join(' | '))
             } catch (e) {
                 console.log(e.message)
                 console.log('переставляем')
@@ -175,8 +163,23 @@
         }
         function canPut(ships, x, y) {
             for (let i = 0; i < ships.length; i++) {
-                if (x === ships[i].x && y === ships[i].y) {
-                    return false
+                for (let j = 0; j < ships[i].coordinates.length; j++) {
+                    const coordinate = ships[i].coordinates[j]
+                    if (x === coordinate.x && y === coordinate.y) {
+                        return false
+                    }
+                    if (
+                        x - 1 === coordinate.x && y === coordinate.y ||
+                        x === coordinate.x && y - 1 === coordinate.y ||
+                        x + 1 === coordinate.x && y === coordinate.y ||
+                        x + 1 === coordinate.x && y - 1 === coordinate.y ||
+                        x === coordinate.x && y + 1 === coordinate.y ||
+                        x - 1 === coordinate.x && y - 1 === coordinate.y ||
+                        x - 1 === coordinate.x && y + 1 === coordinate.y ||
+                        x + 1 === coordinate.x && y + 1 === coordinate.y
+                    ) {
+                        return false
+                    }
                 }
             }
             return true
@@ -184,6 +187,13 @@
         // add ships
         for (let i = 0; i < sizes.length; i++) {
             insert(ships, sizes[i])
+        }
+        for (let i = 0; i < ships.length; i++) {
+            for (let j = 0; j < ships[i].coordinates.length; j++) {
+                const coordinate = ships[i].coordinates[j]
+                console.log(coordinate)
+                document.querySelector(`.cell_${coordinate.x}${coordinate.y}`).style.backgroundColor = 'black'
+            }
         }
     </script>
     <!--1.Кораблей должно быть 10 
@@ -231,6 +241,21 @@
             obj = { coordinates: [{ xCoor: x }, { yCoor: y + 1 }] }
             ships.push(obj)
         } -->
+
+    <!-- 
+        х,у ; check
+     х + 1,у ;
+    x,y + 1;
+    x - 1,y;
+    x,y - 1;
+    x - 1 , y - 1;
+    x + 1, y + 1; 
+    x + 1 , y - 1;
+    x - 1 , y + 1;
+-->
+
+    <!-- рефакторинг! 
+    заоплнить вражеское поле!-->
 </body>
 
 </html>
