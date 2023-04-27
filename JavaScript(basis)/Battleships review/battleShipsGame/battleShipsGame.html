@@ -48,48 +48,30 @@
         font-weight: bold;
         background-color: #E6E6E6;
     }
+
+    #playerArea .ship {
+        background-color: black;
+    }
+
+    #enemyArea .ship {
+        background-color: red;
+    }
 </style>
 
 <body>
     <h1>Battleship Arena</h1>
     <div id='battleArena'>
         <div class='messageArea'>
-            <table>
+            <table id='playerArea'>
                 <thead>
-                    <tr>
-                        <th></th>
-                        <th>A</th>
-                        <th>B</th>
-                        <th>C</th>
-                        <th>D</th>
-                        <th>E</th>
-                        <th>F</th>
-                        <th>G</th>
-                        <th>H</th>
-                        <th>I</th>
-                        <th>J</th>
-                    </tr>
                 </thead>
-                <tbody id='playerArea'>
+                <tbody>
                 </tbody>
             </table>
-            <table>
+            <table id='enemyArea'>
                 <thead>
-                    <tr>
-                        <th></th>
-                        <th>A</th>
-                        <th>B</th>
-                        <th>C</th>
-                        <th>D</th>
-                        <th>E</th>
-                        <th>F</th>
-                        <th>G</th>
-                        <th>H</th>
-                        <th>I</th>
-                        <th>J</th>
-                    </tr>
                 </thead>
-                <tbody id='enemyArea'>
+                <tbody>
                 </tbody>
             </table>
         </div>
@@ -97,38 +79,74 @@
     <script>
         const playerArea = document.getElementById('playerArea')
         const enemyArea = document.getElementById('enemyArea')
+        class Ship {
+            constructor(coordinates) {
+                this.coordinates = coordinates
+            }
+            isFree(x, y) {
+                for (let i = 0; i < this.coordinates.length; i++) {
+                    const coordinate = this.coordinates[i]
+                    if (
+                        (x === coordinate.x && y === coordinate.y) ||
+                        (x - 1 === coordinate.x && y === coordinate.y) ||
+                        (x === coordinate.x && y - 1 === coordinate.y) ||
+                        (x + 1 === coordinate.x && y === coordinate.y) ||
+                        (x + 1 === coordinate.x && y - 1 === coordinate.y) ||
+                        (x === coordinate.x && y + 1 === coordinate.y) ||
+                        (x - 1 === coordinate.x && y - 1 === coordinate.y) ||
+                        (x - 1 === coordinate.x && y + 1 === coordinate.y) ||
+                        (x + 1 === coordinate.x && y + 1 === coordinate.y)
+                    ) {
+                        return false
+                    }
+                }
+                return true
+            }
+
+        }
+
+        const UP_DIRECTION = 1
+        const DOWN_DIRECTION = 2
+        const LEFT_DIRECTION = 3
+        const RIGHT_DIRECTION = 4
+
+
         class BattleshipArea {
             constructor(elem) {
                 this.elem = elem
                 this.ships = []
                 this.sizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
+                this.chars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
             }
             createArea() {
+                const chars = this.chars.map((char) => `<th>${char}</th>`).join('')
+                const thead = `<tr><th></th>${chars}</tr>`
                 let tbody = ''
                 for (let y = 1; y <= 10; y++) {
                     let tr = `<th>${y}</th>`
                     for (let x = 1; x <= 10; x++) {
-                        tr += `<td class="playerCell_${x}${y}"></td>`
+                        tr += `<td class="cell_${x}${y}"></td>`
                     }
                     tbody += `<tr>${tr}</tr>`
                 }
-                this.elem.innerHTML = tbody
+                this.elem.querySelector('thead').innerHTML = thead
+                this.elem.querySelector('tbody').innerHTML = tbody
             }
             getRandomArbitrary(min, max) {
                 min = Math.ceil(min);
                 max = Math.floor(max);
                 return Math.floor(Math.random() * (max - min + 1)) + min
             }
-            insert(ships, size) {
+            insert(size) {
                 let x = this.getRandomArbitrary(1, 10)
                 let y = this.getRandomArbitrary(1, 10)
-                let direction = this.getRandomArbitrary(1, 4)
-                let coordinates = []
+                const direction = this.getRandomArbitrary(UP_DIRECTION, RIGHT_DIRECTION)
+                const coordinates = []
                 try {
                     for (let i = 0; i < size; i++) {
                         console.log(x, y)
                         // проверка на корабль
-                        if (!this.canPut(ships, x, y)) {
+                        if (!this.canPut(x, y)) {
                             throw new Error('место занято другим кораблем')
                         }
                         // проверка границ
@@ -138,92 +156,64 @@
                         coordinates.push({ x, y })
                         console.log(`часть корабля поставлена на ${x} и ${y} координат `)
                         // проверка сторон
-                        if (direction === 1) {
-                            y -= 1
-                        } else if (direction === 2) {
-                            y += 1
-                        } else if (direction === 3) {
-                            x -= 1
-                        } else if (direction === 4) {
-                            x += 1
+                        switch (direction) {
+                            case UP_DIRECTION:
+                                y -= 1
+                                break
+                            case DOWN_DIRECTION:
+                                y += 1
+                                break
+                            case LEFT_DIRECTION:
+                                x -= 1
+                                break
+                            case RIGHT_DIRECTION:
+                                x += 1
+                                break
                         }
                     }
-                    ships.push({ coordinates })
+                    this.ships.push(new Ship(coordinates))
                     console.log('поставил корабль', coordinates.map(({ x, y }) => `${x},${y}`).join(' | '))
                 } catch (e) {
                     console.log(e.message)
                     console.log('переставляем')
-                    this.insert(ships, size)
+                    this.insert(size)
                 }
             }
-            canPut(ships, x, y) {
+            canPut(x, y) {
                 for (let i = 0; i < this.ships.length; i++) {
-                    for (let j = 0; j < this.ships[i].coordinates.length; j++) {
-                        const coordinate = this.ships[i].coordinates[j]
-                        if (x === coordinate.x && y === coordinate.y) {
-                            return false
-                        }
-                        if (
-                            x - 1 === coordinate.x && y === coordinate.y ||
-                            x === coordinate.x && y - 1 === coordinate.y ||
-                            x + 1 === coordinate.x && y === coordinate.y ||
-                            x + 1 === coordinate.x && y - 1 === coordinate.y ||
-                            x === coordinate.x && y + 1 === coordinate.y ||
-                            x - 1 === coordinate.x && y - 1 === coordinate.y ||
-                            x - 1 === coordinate.x && y + 1 === coordinate.y ||
-                            x + 1 === coordinate.x && y + 1 === coordinate.y
-                        ) {
-                            return false
-                        }
+                    const ship = this.ships[i]
+                    if (!ship.isFree(x, y)) {
+                        return false
                     }
                 }
                 return true
             }
-            addShips() {
+            generateShips() {
                 for (let i = 0; i < this.sizes.length; i++) {
-                    this.insert(this.ships, this.sizes[i])
+                    this.insert(this.sizes[i])
                 }
+                this.drawShips()
+            }
+            drawShips() {
                 for (let i = 0; i < this.ships.length; i++) {
                     for (let j = 0; j < this.ships[i].coordinates.length; j++) {
                         const coordinate = this.ships[i].coordinates[j]
                         console.log(coordinate)
-                        document.querySelector(`.playerCell_${coordinate.x}${coordinate.y}`).style.backgroundColor = 'black'
+                        this.elem.querySelector(`.cell_${coordinate.x}${coordinate.y}`).classList.add("ship")
                     }
                 }
             }
         }
 
-        class BattleshipAreaEnemy extends BattleshipArea {
-            createArea() {
-                let tbody = ''
-                for (let y = 1; y <= 10; y++) {
-                    let tr = `<th>${y}</th>`
-                    for (let x = 1; x <= 10; x++) {
-                        tr += `<td class="enemyCell_${x}${y}"></td>`
-                    }
-                    tbody += `<tr>${tr}</tr>`
-                }
-                this.elem.innerHTML = tbody
-            }
-            addShips() {
-                for (let i = 0; i < this.sizes.length; i++) {
-                    this.insert(this.ships, this.sizes[i])
-                }
-                for (let i = 0; i < this.ships.length; i++) {
-                    for (let j = 0; j < this.ships[i].coordinates.length; j++) {
-                        const coordinate = this.ships[i].coordinates[j]
-                        console.log(coordinate)
-                        document.querySelector(`.enemyCell_${coordinate.x}${coordinate.y}`).style.backgroundColor = 'red'
-                    }
-                }
-            }
-        }
         const battleshipPlayerArea = new BattleshipArea(playerArea)
-        const battleshipEnemyArea = new BattleshipAreaEnemy(enemyArea)
+        const battleshipEnemyArea = new BattleshipArea(enemyArea)
         battleshipPlayerArea.createArea()
         battleshipEnemyArea.createArea()
-        battleshipPlayerArea.addShips()
-        battleshipEnemyArea.addShips()
+        battleshipPlayerArea.generateShips()
+        battleshipEnemyArea.generateShips()
+
+
+
     </script>
     <!--1.Кораблей должно быть 10 
 1 корабль — ряд из 4 клеток («четырёхпалубный»; линкор)
