@@ -1,0 +1,48 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 10px;
+}
+
+#battleArena {
+    padding-top: 30px;
+}
+
+.messageArea {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+table {
+    width: 300px;
+    height: 300px;
+    padding-left: 10px;
+    border-collapse: collapse;
+}
+
+td,
+th {
+    width: 30px;
+    border: 1px solid black;
+    padding: 3px;
+    text-align: center;
+}
+
+th {
+    font-weight: bold;
+    background-color: #E6E6E6;
+}
+
+#playerArea .ship {
+    background-color: black;
+}
+
+#enemyArea .ship {
+    background-color: red;
+}
