@@ -40,4 +40,4 @@ function init() {
     const calenderElement = document.getElementById('calendar')
     calendar(calenderElement, 2023, 4)
 }
-window.onload = init
+document.addEventListener('DOMContentLoaded', init)
