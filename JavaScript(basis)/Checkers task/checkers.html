@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="checkers.css">
+    <title>Checkers</title>
+</head>
+
+<body>
+    <h1>Checkers Arena</h1>
+    <div id='area'>
+        <div class='messageArea'>
+            <table id='checkersArea'>
+                <thead></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        class CheckersArea {
+            constructor(elem) {
+                this.elem = elem
+                this.blackCells = []
+                this.chars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',]
+            }
+            createArea() {
+                const chars = this.chars.map((char) => `<th>${char}</th>`).join('')
+                const thead = `<tr><th></th>${chars}</tr>`
+                let tbody = ''
+                let coords = []
+                for (let y = 1; y <= 8; y++) {
+                    let tr = `<th>${y}</th>`
+                    for (let x = 1; x <= 8; x++) {
+                        if (y % 2 !== 0 && x % 2 === 0 || y % 2 === 0 && x % 2 !== 0) {
+                            tr += `<td class="blackCell_${x}${y}"></td>`
+                            coords.push({ x, y })
+                            this.drawCells()
+                        } else {
+                            tr += `<td class="cell_${x}${y}"></td>`
+                        }
+                    }
+                    tbody += `<tr>${tr}</tr>`
+                    this.blackCells.push({ coords })
+                }
+                this.elem.querySelector('thead').innerHTML = thead
+                this.elem.querySelector('tbody').innerHTML = tbody
+            }
+            drawCells() {
+                for (let i = 0; i < this.blackCells.length; i++) {
+                    for (let j = 0; j < this.blackCells[i].coords.length; j++) {
+                        const coordinate = this.blackCells[i].coords[j]
+                        console.log(coordinate)
+                        console.log(document.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`))
+                    }
+                }
+            }
+        }
+        const area = document.getElementById('checkersArea')
+        const checkersArea = new CheckersArea(area)
+        checkersArea.createArea()
+    </script>
+</body>
+
+</html>
