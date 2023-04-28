@@ -19,16 +19,21 @@ h1 {
 }
 
 table {
-    width: 300px;
-    height: 300px;
+    width: 250px;
+    height: 250px;
     padding-left: 10px;
     border-collapse: collapse;
+}
+
+img {
+    height: 50px;
+    width: 50px;
 }
 
 td {
     width: 30px;
     border: 1px solid black;
-    padding: 50px;
+    padding: 30px;
     text-align: center;
 }
 
