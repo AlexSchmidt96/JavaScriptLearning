@@ -33,7 +33,7 @@ img {
 td {
     width: 30px;
     border: 1px solid black;
-    padding: 30px;
+    padding: 50px;
     text-align: center;
 }
 
@@ -44,6 +44,21 @@ th {
     background-color: white;
 }
 
-.blackCell_ {
-    background-color: black;
+.blackCell {
+    background-color: grey;
+}
+
+.checker {
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    border: 0;
+}
+
+.checker.white {
+    background: #fff;
+}
+
+.checker.red {
+    background: red;
 }

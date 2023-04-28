@@ -19,7 +19,6 @@
             </table>
         </div>
     </div>
-
     <script>
         class CheckersArea {
             constructor(elem) {
@@ -36,9 +35,10 @@
                     let tr = `<th>${y}</th>`
                     for (let x = 1; x <= 8; x++) {
                         if (y % 2 !== 0 && x % 2 === 0 || y % 2 === 0 && x % 2 !== 0) {
-                            tr += `<td class="blackCell_${x}${y}"><img src="checkers img/free-icon-chinese-checkers-6412967.png" alt="checkers"></td>`
+                            tr += `<td class="blackCell_${x}${y}"></td>`
                             coords.push({ x, y })
-                        } else {
+                        }
+                        else {
                             tr += `<td class="cell_${x}${y}"></td>`
                         }
                     }
@@ -53,7 +53,7 @@
                     for (let j = 0; j < this.cells[i].coords.length; j++) {
                         const coordinate = this.cells[i].coords[j]
                         console.log(coordinate)
-                        this.elem.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`).style.backgroundColor = 'grey'
+                        this.elem.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`).classList.add('blackCell')
                     }
                 }
             }
@@ -63,7 +63,6 @@
         checkersArea.createArea()
         checkersArea.drawCells()
     </script>
-    <!-- Добавить циклы для расстанвоки своих шашек и шашек врага, предварительно ходить по у от 1 до 3 и от 6 до 8 -->
 </body>
 
 </html>
