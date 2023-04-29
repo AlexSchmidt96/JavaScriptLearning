@@ -19,8 +19,6 @@
             </table>
         </div>
     </div>
-    <img src="img/free-icon-chinese-checkers-2006254.png" alt="black" srcset="">
-    <img src="img/free-icon-chinese-checkers-6412967 (1).png" alt="red" srcset="">
     <script>
         class CheckersArea {
             constructor(elem) {
@@ -37,11 +35,11 @@
                     let tr = `<th>${y}</th>`
                     for (let x = 1; x <= 8; x++) {
                         if (y % 2 !== 0 && x % 2 === 0 || y % 2 === 0 && x % 2 !== 0) {
-                            tr += `<td class="blackCell_${x}${y}"></td>`
+                            tr += `<td class="blackCell_${x}${y}"><span class = "piece"></span>`
                             coords.push({ x, y })
                         }
                         else {
-                            tr += `<td class="cell_${x}${y}"></td>`
+                            tr += `<td class="cell_${x}${y}"</td>`
                         }
                     }
                     tbody += `<tr>${tr}</tr>`
@@ -55,6 +53,11 @@
                     for (let j = 0; j < this.cells[i].coords.length; j++) {
                         const coordinate = this.cells[i].coords[j]
                         console.log(coordinate)
+                        if (coordinate.y <= 3) {
+                            this.elem.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`).firstChild.classList.add('piece', 'checker', 'white')
+                        } else if (coordinate.y >= 6) {
+                            this.elem.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`).firstChild.classList.add('piece', 'checker', 'red')
+                        }
                         this.elem.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`).classList.add('blackCell')
                     }
                 }
