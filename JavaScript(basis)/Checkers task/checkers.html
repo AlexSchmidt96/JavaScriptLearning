@@ -28,83 +28,53 @@
             }
             createArea() {
                 const chars = this.chars.map((char) => `<th>${char}</th>`).join('')
-                const thead = `<tr><th></th>${chars}</tr>`
+                const thead = `<tr> <th></th>${chars}</tr>`
                 let tbody = ''
-                const coordinates = []
-                for (let y = 1; y <= 8; y++) {
+                let y = 1
+                for (let y = 1; y <= 3; y++) {
                     let tr = `<th>${y}</th>`
                     for (let x = 1; x <= 8; x++) {
                         if ((y + x) % 2 === 0) {
-                            tr += `<td class="cell_${x}${y}"</td>`
+                            tr += `<td class="cell" </td>`
                         }
                         else {
-                            tr += `<td class="blackCell_${x}${y}"></td>`
-                            coordinates.push({ x, y })
+                            tr += `<td class="blackCell"><span class = "placeForCheckers checker black" ></span></td>`
+                        }
+                    }
+                    tbody += `<tr>${tr}</tr>`
+                }
+                for (let y = 4; y <= 5; y++) {
+                    let tr = `<th>${y}</th>`
+                    for (let x = 1; x <= 8; x++) {
+                        if ((y + x) % 2 === 0) {
+                            tr += `<td class="cell" </td>`
+                        }
+                        else {
+                            tr += `<td class="blackCell"></td>`
+                        }
+                    }
+                    tbody += `<tr>${tr}</tr>`
+                }
+                for (let y = 6; y <= 8; y++) {
+                    let tr = `<th>${y}</th>`
+                    for (let x = 1; x <= 8; x++) {
+                        if ((y + x) % 2 === 0) {
+                            tr += `<td class="cell" </td>`
+                        }
+                        else {
+                            tr += `<td class="blackCell"><span class = "placeForCheckers checker white" ></span></td>`
                         }
                     }
                     tbody += `<tr>${tr}</tr>`
                 }
                 this.elem.querySelector('thead').innerHTML = thead
                 this.elem.querySelector('tbody').innerHTML = tbody
-                this.blackCells.push({ coordinates })
-                this.drawCells()
-            }
-            drawCells() {
-                for (let i = 0; i < this.blackCells.length; i++) {
-                    for (let j = 0; j < this.blackCells[i].coordinates.length; j++) {
-                        const coordinate = this.blackCells[i].coordinates[j]
-                        this.elem.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`).classList.add('blackCell')
-                        this.drawCheckers()
-                    }
-                }
-            }
-            drawCheckers() {
-                for (let i = 0; i < this.blackCells.length; i++) {
-                    for (let j = 0; j < this.blackCells[i].coordinates.length; j++) {
-                        const coordinate = this.blackCells[i].coordinates[j]
-                        if (coordinate.y <= 3) {
-                            let span = document.createElement('span')
-                            span.className = 'placeForCheckers'
-                            this.elem.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`).append(span)
-                            this.elem.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`).firstChild.classList.add('checker', 'black')
-                        } else if (coordinate.y >= 6) {
-                            let span = document.createElement('span')
-                            span.className = 'placeForCheckers'
-                            this.elem.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`).append(span)
-                            this.elem.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`).firstChild.classList.add('checker', 'white')
-                        }
-                    }
-                }
             }
         }
         const area = document.getElementById('checkersArea')
         const checkersArea = new CheckersArea(area)
         checkersArea.createArea()
     </script>
-    <!-- const chars = this.chars.map((char) => `<th>${char}</th>`).join('')
-    const thead = `<tr>
-        <th></th>${chars}
-    </tr>`
-    let tbody = ''
-
-    for (let y = 1; y <= 8; y++) { let tr=`<th>${y}</th>`
-        for (let x = 1; x <= 8; x++) { if ((y + x) % 2===0) { tr +=`<td class="cell" </td>`
-            }
-            else {
-            tr += `<td class="blackCell"></td>`
-            }
-            }
-            tbody += `<tr>${tr}</tr>`
-            }
-            this.elem.querySelector('thead').innerHTML = thead
-            this.elem.querySelector('tbody').innerHTML = tbody
-            let span = document.createElement('span')
-            span.className = 'placeForCheckers'
-            this.elem.querySelector(".blackCell").append(span)
-            this.elem.querySelector(".blackCell").firstChild.classList.add('placeForCheckers', 'checker', 'black')
-
-
-            } -->
 </body>
 
 </html>

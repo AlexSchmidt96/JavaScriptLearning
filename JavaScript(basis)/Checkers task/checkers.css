@@ -19,15 +19,12 @@ h1 {
 }
 
 table {
-    width: 250px;
-    height: 250px;
-    padding-left: 10px;
     border-collapse: collapse;
 }
 
 td {
     width: 45px;
-    height: 45px;
+    height: 49px;
     border: 1px solid black;
     text-align: center;
 }
@@ -45,8 +42,8 @@ th {
 
 .checker {
     display: inline-block;
-    height: 41px;
-    width: 45px;
+    height: 44px;
+    width: 44px;
     border-radius: 50%;
     border: 1px solid #000;
 }
