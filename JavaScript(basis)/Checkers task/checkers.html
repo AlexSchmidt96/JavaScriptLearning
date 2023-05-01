@@ -38,7 +38,7 @@
                             tr += `<td class="cell_${x}${y}"</td>`
                         }
                         else {
-                            tr += `<td class="blackCell_${x}${y}"><span class = "piece"></span>`
+                            tr += `<td class="blackCell_${x}${y}"></td>`
                             coordinates.push({ x, y })
                         }
                     }
@@ -63,9 +63,15 @@
                     for (let j = 0; j < this.blackCells[i].coordinates.length; j++) {
                         const coordinate = this.blackCells[i].coordinates[j]
                         if (coordinate.y <= 3) {
-                            this.elem.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`).firstChild.classList.add('piece', 'checker', 'black')
+                            let span = document.createElement('span')
+                            span.className = 'placeForCheckers'
+                            this.elem.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`).append(span)
+                            this.elem.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`).firstChild.classList.add('checker', 'black')
                         } else if (coordinate.y >= 6) {
-                            this.elem.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`).firstChild.classList.add('piece', 'checker', 'white')
+                            let span = document.createElement('span')
+                            span.className = 'placeForCheckers'
+                            this.elem.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`).append(span)
+                            this.elem.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`).firstChild.classList.add('checker', 'white')
                         }
                     }
                 }
