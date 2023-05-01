@@ -26,7 +26,8 @@ table {
 }
 
 td {
-    width: 30px;
+    width: 45px;
+    height: 45px;
     border: 1px solid black;
     text-align: center;
 }
@@ -44,7 +45,7 @@ th {
 
 .checker {
     display: inline-block;
-    height: 45px;
+    height: 41px;
     width: 45px;
     border-radius: 50%;
     border: 1px solid #000;
@@ -54,6 +55,6 @@ th {
     background-color: white;
 }
 
-.checker.red {
+.checker.black {
     background-color: black;
 }
