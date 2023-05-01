@@ -23,14 +23,14 @@
         class CheckersArea {
             constructor(elem) {
                 this.elem = elem
-                this.cells = []
+                this.blackCells = []
                 this.chars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',]
             }
             createArea() {
                 const chars = this.chars.map((char) => `<th>${char}</th>`).join('')
                 const thead = `<tr><th></th>${chars}</tr>`
                 let tbody = ''
-                let coords = []
+                const coordinates = []
                 for (let y = 1; y <= 8; y++) {
                     let tr = `<th>${y}</th>`
                     for (let x = 1; x <= 8; x++) {
@@ -39,29 +39,29 @@
                         }
                         else {
                             tr += `<td class="blackCell_${x}${y}"><span class = "piece"></span>`
-                            coords.push({ x, y })
+                            coordinates.push({ x, y })
                         }
                     }
                     tbody += `<tr>${tr}</tr>`
                 }
                 this.elem.querySelector('thead').innerHTML = thead
                 this.elem.querySelector('tbody').innerHTML = tbody
-                this.cells.push({ coords })
+                this.blackCells.push({ coordinates })
                 this.drawCells()
             }
             drawCells() {
-                for (let i = 0; i < this.cells.length; i++) {
-                    for (let j = 0; j < this.cells[i].coords.length; j++) {
-                        const coordinate = this.cells[i].coords[j]
+                for (let i = 0; i < this.blackCells.length; i++) {
+                    for (let j = 0; j < this.blackCells[i].coordinates.length; j++) {
+                        const coordinate = this.blackCells[i].coordinates[j]
                         this.elem.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`).classList.add('blackCell')
                         this.drawCheckers()
                     }
                 }
             }
             drawCheckers() {
-                for (let i = 0; i < this.cells.length; i++) {
-                    for (let j = 0; j < this.cells[i].coords.length; j++) {
-                        const coordinate = this.cells[i].coords[j]
+                for (let i = 0; i < this.blackCells.length; i++) {
+                    for (let j = 0; j < this.blackCells[i].coordinates.length; j++) {
+                        const coordinate = this.blackCells[i].coordinates[j]
                         if (coordinate.y <= 3) {
                             this.elem.querySelector(`.blackCell_${coordinate.x}${coordinate.y}`).firstChild.classList.add('piece', 'checker', 'black')
                         } else if (coordinate.y >= 6) {
