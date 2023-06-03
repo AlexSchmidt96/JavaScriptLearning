@@ -4,6 +4,7 @@
 // 3. Рисуем календарь пока не достигнем понедельника следующего месяца 
 
 function calendar(elem, year, month) {
+    const calenderElement = document.getElementById('calendar')
     const now = new Date();
     const dateOptions = { month: 'long' }
     const monthIndex = month - 1;
@@ -16,8 +17,8 @@ function calendar(elem, year, month) {
     }
 
     while (date.getMonth() !== monthIndex + 1 || date.getDay() !== 1) {
+        const isCurrentDay = date.getMonth() === now.getMonth() && date.getDate() === now.getDate();
         if (date.getMonth() === monthIndex) {
-            const isCurrentDay = date.getMonth() === now.getMonth() && date.getDate() === now.getDate();
             if (isCurrentDay) {
                 tbody += `<td class="currentDayCell">${date.getDate()}</td>`
             } else {
@@ -31,13 +32,33 @@ function calendar(elem, year, month) {
         }
         date.setDate(date.getDate() + 1);
     }
-    const caption = document.querySelector('caption')
-    caption.innerHTML = `< ${currMonth} ${year} >`
+    const monthAndYearCaption = document.querySelector('caption')
+    monthAndYearCaption.innerHTML = `<span class='arrorLeft'> < </span> ${currMonth} ${year} <span class='arrorRight'> > </span>`
     const tableBody = document.querySelector('tbody')
     tableBody.innerHTML = `<tr>${tbody}</tr>`
+    document.querySelector('button').addEventListener('click', function (event) {
+        let target = event.target
+        if (target.tagName != 'SPAN') {
+            return;
+        }
+        calendar(calenderElement, now.getFullYear(), now.getMonth() + 1)
+    })
+    monthAndYearCaption.addEventListener('click', function (event) {
+        let target = event.target
+        if (target.tagName != 'SPAN') {
+            return;
+        }
+        if (target.className === 'arrorLeft') {
+            calendar(calenderElement, year, month - 1)
+        }
+        if (target.className === 'arrorRight') {
+            calendar(calenderElement, year, month + 1)
+        }
+    })
 }
+
 function init() {
     const calenderElement = document.getElementById('calendar')
-    calendar(calenderElement, 2023, 4)
+    calendar(calenderElement, 2023, 7)
 }
 document.addEventListener('DOMContentLoaded', init)
