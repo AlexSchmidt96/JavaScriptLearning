@@ -15,10 +15,13 @@ function calendar(elem, year, month) {
     while (date.getDay() !== 1) {
         date.setDate(date.getDate() - 1)
     }
-
+    // debugger
     while (date.getMonth() !== monthIndex + 1 || date.getDay() !== 1) {
-        const isCurrentDay = date.getMonth() === now.getMonth() && date.getDate() === now.getDate();
+        if (date.getFullYear() === year + 1) {
+            break
+        }
         if (date.getMonth() === monthIndex) {
+            const isCurrentDay = date.getMonth() === now.getMonth() && date.getDate() === now.getDate();
             if (isCurrentDay) {
                 tbody += `<td class="currentDayCell">${date.getDate()}</td>`
             } else {
@@ -32,33 +35,32 @@ function calendar(elem, year, month) {
         }
         date.setDate(date.getDate() + 1);
     }
-    const monthAndYearCaption = document.querySelector('caption')
-    monthAndYearCaption.innerHTML = `<span class='arrorLeft'> < </span> ${currMonth} ${year} <span class='arrorRight'> > </span>`
+
+    const monthAndYearCaption = document.querySelector('.monthAndYearCaption')
+    monthAndYearCaption.innerHTML = `<span class='arrorLeft'> < </span> <span class='today'> ${currMonth} ${year} </span> <span class='arrorRight'> > </span>`
     const tableBody = document.querySelector('tbody')
     tableBody.innerHTML = `<tr>${tbody}</tr>`
-    document.querySelector('button').addEventListener('click', function (event) {
-        let target = event.target
-        if (target.tagName != 'SPAN') {
-            return;
-        }
-        calendar(calenderElement, now.getFullYear(), now.getMonth() + 1)
-    })
     monthAndYearCaption.addEventListener('click', function (event) {
         let target = event.target
         if (target.tagName != 'SPAN') {
             return;
         }
-        if (target.className === 'arrorLeft') {
-            calendar(calenderElement, year, month - 1)
-        }
-        if (target.className === 'arrorRight') {
-            calendar(calenderElement, year, month + 1)
+        switch (target.className) {
+            case 'arrorLeft':
+                calendar(calenderElement, year, month - 1)
+                break;
+            case 'arrorRight':
+                calendar(calenderElement, year, month + 1)
+                break
+            case 'today':
+                calendar(calenderElement, now.getFullYear(), now.getMonth() + 1)
+                break;
         }
     })
 }
 
 function init() {
     const calenderElement = document.getElementById('calendar')
-    calendar(calenderElement, 2023, 7)
+    calendar(calenderElement, 2023, 11)
 }
 document.addEventListener('DOMContentLoaded', init)
