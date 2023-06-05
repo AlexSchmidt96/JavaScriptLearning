@@ -3,24 +3,37 @@
 // 2. Немного изменить алгоритм отрисовки: шагнуть до понедельника и начать рисовать строчки пока не нарисуем весь календарь
 // 3. Рисуем календарь пока не достигнем понедельника следующего месяца 
 
-function calendar(elem, year, month) {
-    const calenderElement = document.getElementById('calendar')
-    const now = new Date();
+
+
+// План 
+//1. функция initCalendar рисует бокс и кнопки и вызвать 1 раз fillCalendar
+//2. функция fillCalendar рисует числа внутри календаря 
+//3. функция обработчик которая вызывает fillCalendar
+
+const DEFAULT_VALUES = {
+    year: 2023,
+    month: 11,
+}
+
+function fillCalendar(month) {
     const dateOptions = { month: 'long' }
-    const monthIndex = month - 1;
-    const date = new Date(year, monthIndex);
+    const date = new Date(DEFAULT_VALUES.year, month - 1);
     const currMonth = date.toLocaleDateString('ru-RU', dateOptions);
+
+
     let tbody = ``
+    const tableBody = document.querySelector('tbody')
+    const now = new Date();
+
+    const monthAndYearCaption = document.querySelector('.today')
+    monthAndYearCaption.innerHTML = `${currMonth} ${DEFAULT_VALUES.year} `
 
     while (date.getDay() !== 1) {
         date.setDate(date.getDate() - 1)
     }
     // debugger
-    while (date.getMonth() !== monthIndex + 1 || date.getDay() !== 1) {
-        if (date.getFullYear() === year + 1) {
-            break
-        }
-        if (date.getMonth() === monthIndex) {
+    while ((date.getMonth() !== month || date.getDay() !== 1) && date.getFullYear() !== DEFAULT_VALUES.year + 1) {
+        if (date.getMonth() === month - 1) {
             const isCurrentDay = date.getMonth() === now.getMonth() && date.getDate() === now.getDate();
             if (isCurrentDay) {
                 tbody += `<td class="currentDayCell">${date.getDate()}</td>`
@@ -35,32 +48,36 @@ function calendar(elem, year, month) {
         }
         date.setDate(date.getDate() + 1);
     }
-
-    const monthAndYearCaption = document.querySelector('.monthAndYearCaption')
-    monthAndYearCaption.innerHTML = `<span class='arrorLeft'> < </span> <span class='today'> ${currMonth} ${year} </span> <span class='arrorRight'> > </span>`
-    const tableBody = document.querySelector('tbody')
     tableBody.innerHTML = `<tr>${tbody}</tr>`
-    monthAndYearCaption.addEventListener('click', function (event) {
-        let target = event.target
-        if (target.tagName != 'SPAN') {
-            return;
-        }
-        switch (target.className) {
-            case 'arrorLeft':
-                calendar(calenderElement, year, month - 1)
-                break;
-            case 'arrorRight':
-                calendar(calenderElement, year, month + 1)
-                break
-            case 'today':
-                calendar(calenderElement, now.getFullYear(), now.getMonth() + 1)
-                break;
-        }
-    })
 }
 
+
 function init() {
-    const calenderElement = document.getElementById('calendar')
-    calendar(calenderElement, 2023, 11)
+    fillCalendar(DEFAULT_VALUES.month)
+
+    const now = new Date()
+    document.querySelector('.today').addEventListener('click', function () {
+        selectedMonth = now.getMonth() + 1
+        fillCalendar(selectedMonth)
+    })
+
+    let selectedMonth = DEFAULT_VALUES.month
+
+    document.querySelector('.arrowLeft').addEventListener('click', function () {
+        if (selectedMonth === 1) {
+            return;
+        }
+        selectedMonth -= 1
+
+        fillCalendar(selectedMonth)
+    })
+    document.querySelector('.arrowRight').addEventListener('click', function () {
+        if (selectedMonth === 12) {
+            return;
+        }
+        selectedMonth += 1
+
+        fillCalendar(selectedMonth)
+    })
 }
 document.addEventListener('DOMContentLoaded', init)
