@@ -38,7 +38,7 @@ function calculator() {
                 display.innerHTML = calculate(firstValue, secondValue, operator)
             }
             if (!action) {
-                if (displayOutput === '0') {
+                if (displayOutput === '0' || previousKeyType === 'operator') {
                     display.innerHTML = content
                 }
                 else {
