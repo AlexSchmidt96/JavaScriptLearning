@@ -17,14 +17,24 @@ function calculator() {
         if (target.tagName === 'BUTTON') {
             const action = target.dataset.action
             const content = target.innerHTML
+
             const displayOutput = display.innerHTML
             const previousKeyType = calculator.dataset.previousKeyType
+
             const firstValue = calculator.dataset.firstValue
-            const operator = calculator.dataset.operator
             const secondValue = displayOutput
+            const operator = calculator.dataset.operator
+
+
             if (action === 'decimal') {
-                display.innerHTML = displayOutput + '.'
+                if (!displayOutput.includes('.')) {
+                    display.innerHTML = displayOutput + '.'
+                } else if (previousKeyType === 'operator') {
+                    display.innerHTML = '0'
+                }
+                calculator.dataset.previousKeyType = 'decimal'
             }
+
             if (!action) {
                 if (displayOutput === '0' || previousKeyType === 'operator') {
                     display.innerHTML = content
@@ -32,29 +42,42 @@ function calculator() {
                 else {
                     display.innerHTML = displayOutput + content
                 }
+                calculator.dataset.previousKeyType = 'number'
             }
             switch (action) {
-                case 'percent':
                 case 'divide':
                 case 'multiply':
                 case 'subtract':
                 case 'add':
+
+                    const firstValue = calculator.dataset.firstValue
+                    const secondValue = displayOutput
+                    const operator = calculator.dataset.operator
+
+                    if (firstValue && operator && previousKeyType !== 'operator') {
+                        const value = display.innerHTML = calculate(firstValue, secondValue, operator)
+                        display.innerHTML = value
+                        calculator.dataset.firstValue = value
+                    } else {
+                        calculator.dataset.firstValue = displayOutput
+                    }
                     calculator.dataset.previousKeyType = 'operator'
-                    calculator.dataset.firstValue = displayOutput
                     calculator.dataset.operator = action
-                    display.innerHTML = target.innerHTML
             }
 
             if (action === 'calculate') {
                 display.innerHTML = calculate(firstValue, secondValue, operator)
+                calculator.dataset.previousKeyType = 'calculate'
             }
 
             if (action === 'del') {
                 display.innerHTML = displayOutput.substring(0, displayOutput.length - 1);
+                calculator.dataset.previousKeyType = 'del'
             }
 
             if (action === 'clear') {
                 display.innerHTML = '0'
+                calculator.dataset.previousKeyType = 'clear'
             }
 
             function calculate(num1, num2, operator) {
