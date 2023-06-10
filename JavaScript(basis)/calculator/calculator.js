@@ -40,7 +40,9 @@ function calculator() {
                     const firstValue = calculator.dataset.firstValue
                     const secondValue = displayOutput
                     const operator = calculator.dataset.operator
+
                     display.innerHTML = target.innerHTML
+
                     if (firstValue && operator && previousKeyType !== 'operator' && previousKeyType !== 'calculate') {
                         const value = display.innerHTML = calculate(firstValue, secondValue, operator)
                         display.innerHTML = value
