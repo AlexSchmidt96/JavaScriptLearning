@@ -29,14 +29,14 @@ function calculator() {
             if (action === 'decimal') {
                 if (!displayOutput.includes('.')) {
                     display.innerHTML = displayOutput + '.'
-                } else if (previousKeyType === 'operator') {
+                } else if (previousKeyType === 'operator' || previousKeyType === 'calculate') {
                     display.innerHTML = '0'
                 }
                 calculator.dataset.previousKeyType = 'decimal'
             }
 
             if (!action) {
-                if (displayOutput === '0' || previousKeyType === 'operator') {
+                if (displayOutput === '0' || previousKeyType === 'operator' || previousKeyType === 'calculate') {
                     display.innerHTML = content
                 }
                 else {
@@ -54,7 +54,7 @@ function calculator() {
                     const secondValue = displayOutput
                     const operator = calculator.dataset.operator
 
-                    if (firstValue && operator && previousKeyType !== 'operator') {
+                    if (firstValue && operator && previousKeyType !== 'operator' && previousKeyType !== 'calculate') {
                         const value = display.innerHTML = calculate(firstValue, secondValue, operator)
                         display.innerHTML = value
                         calculator.dataset.firstValue = value
@@ -66,7 +66,17 @@ function calculator() {
             }
 
             if (action === 'calculate') {
-                display.innerHTML = calculate(firstValue, secondValue, operator)
+                let firstValue = calculator.dataset.firstValue
+                const operator = calculator.dataset.operator
+                let secondValue = displayOutput
+                if (firstValue) {
+                    if (previousKeyType === 'calculate') {
+                        firstValue = displayOutput
+                        secondValue = calculator.dataset.modValue
+                    }
+                    display.innerHTML = calculate(firstValue, secondValue, operator)
+                }
+                calculator.dataset.modValue = secondValue
                 calculator.dataset.previousKeyType = 'calculate'
             }
 
@@ -76,6 +86,11 @@ function calculator() {
             }
 
             if (action === 'clear') {
+                calculator.dataset.firstValue = ''
+                calculator.dataset.modValue = ''
+                calculator.dataset.operator = ''
+                calculator.dataset.previousKeyType = ''
+
                 display.innerHTML = '0'
                 calculator.dataset.previousKeyType = 'clear'
             }
@@ -86,8 +101,6 @@ function calculator() {
                     result = parseFloat(num1) + parseFloat(num2)
                 } else if (operator === 'subtract') {
                     result = parseFloat(num1) - parseFloat(num2)
-                } else if (operator === 'percent') {
-                    result = parseFloat(num1) / 100
                 } else if (operator === 'multiply') {
                     result = parseFloat(num1) * parseFloat(num2)
                 } else if (operator === 'divide') {
