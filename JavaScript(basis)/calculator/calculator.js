@@ -5,9 +5,10 @@
 // 1.1. Делать из целых чисел дробные с помощью точки
 // 1.2. Делать из однозначного числа двух- трехзначные и тд (до тех пор пока размер дисплея позволяет)
 // 2. применять к ним различные операторы (+,- и тд)
-// 2.1.Делать из положительного числа отрицательное и наобарот
 // 3. Считать результат 
 // 4. Очищать дисплей 
+
+
 function calculator() {
     const calculator = document.querySelector('.calc')
     const display = document.querySelector('.calculator-display')
@@ -20,15 +21,6 @@ function calculator() {
 
             const displayOutput = display.innerHTML
             const previousKeyType = calculator.dataset.previousKeyType
-
-            if (action === 'decimal') {
-                if (!displayOutput.includes('.')) {
-                    display.innerHTML = displayOutput + '.'
-                } else if (previousKeyType === 'operator' || previousKeyType === 'calculate') {
-                    display.innerHTML = '0'
-                }
-                calculator.dataset.previousKeyType = 'decimal'
-            }
 
             if (!action) {
                 if (displayOutput === '0' || previousKeyType === 'operator' || previousKeyType === 'calculate') {
@@ -58,6 +50,15 @@ function calculator() {
                     }
                     calculator.dataset.previousKeyType = 'operator'
                     calculator.dataset.operator = action
+            }
+
+            if (action === 'decimal') {
+                if (!displayOutput.includes('.')) {
+                    display.innerHTML = displayOutput + '.'
+                } else if (previousKeyType === 'operator' || previousKeyType === 'calculate') {
+                    display.innerHTML = '0'
+                }
+                calculator.dataset.previousKeyType = 'decimal'
             }
 
             if (action === 'calculate') {
@@ -108,6 +109,8 @@ function calculator() {
         }
     })
 }
+
+
 function init() {
     calculator()
 }
