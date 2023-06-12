@@ -78,3 +78,9 @@
 .orange {
     background: orange;
 }
+
+.clicked {
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5) inset;
+    opacity: 0.3;
+}

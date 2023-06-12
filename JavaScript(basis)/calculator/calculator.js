@@ -9,111 +9,131 @@
 // 4. Очищать дисплей 
 
 
-function calculator() {
-    const calculator = document.querySelector('.calc')
-    const display = document.querySelector('.calculator-display')
-    const buttons = document.querySelector('.buttons')
-    buttons.addEventListener('click', function (event) {
-        const target = event.target
-        if (target.tagName === 'BUTTON') {
-            const action = target.dataset.action
-            const content = target.innerHTML
 
-            const displayOutput = display.innerHTML
-            const previousKeyType = calculator.dataset.previousKeyType
+class Calculator {
+    constructor() {
+        this.calculator = document.querySelector('.calc')
+        this.display = document.querySelector('.calculator-display')
+        this.buttons = document.querySelector('.buttons')
+        // console.log(this) // проверка this
+    }
+    start() {
+        this.buttons.addEventListener('click', (event) => {
+            // console.log(this) // проверка this
+            const target = event.target
+            if (target.tagName === 'BUTTON') {
+                const action = target.dataset.action
+                const content = target.innerHTML
 
-            if (!action) {
-                if (displayOutput === '0' || previousKeyType === 'operator' || previousKeyType === 'calculate') {
-                    display.innerHTML = content
-                }
-                else {
-                    display.innerHTML = displayOutput + content
-                }
-                calculator.dataset.previousKeyType = 'number'
-            }
-            switch (action) {
-                case 'divide':
-                case 'multiply':
-                case 'subtract':
-                case 'add':
+                const displayOutput = this.display.innerHTML
+                const previousKeyType = this.calculator.dataset.previousKeyType
 
-                    const firstValue = calculator.dataset.firstValue
-                    const secondValue = displayOutput
-                    const operator = calculator.dataset.operator
-
-                    display.innerHTML = target.innerHTML
-
-                    if (firstValue && operator && previousKeyType !== 'operator' && previousKeyType !== 'calculate') {
-                        const value = display.innerHTML = calculate(firstValue, secondValue, operator)
-                        display.innerHTML = value
-                        calculator.dataset.firstValue = value
-                    } else {
-                        calculator.dataset.firstValue = displayOutput
-                    }
-                    calculator.dataset.previousKeyType = 'operator'
-                    calculator.dataset.operator = action
-            }
-
-            if (action === 'decimal') {
-                if (!displayOutput.includes('.')) {
-                    display.innerHTML = displayOutput + '.'
-                } else if (previousKeyType === 'operator' || previousKeyType === 'calculate') {
-                    display.innerHTML = '0'
-                }
-                calculator.dataset.previousKeyType = 'decimal'
-            }
-
-            if (action === 'calculate') {
-                let firstValue = calculator.dataset.firstValue
-                const operator = calculator.dataset.operator
+                let firstValue = this.calculator.dataset.firstValue
+                const operator = this.calculator.dataset.operator
                 let secondValue = displayOutput
-                if (firstValue) {
-                    if (previousKeyType === 'calculate') {
-                        firstValue = displayOutput
-                        secondValue = calculator.dataset.modValue
-                    }
-                    display.innerHTML = calculate(firstValue, secondValue, operator)
-                }
-                calculator.dataset.modValue = secondValue
-                calculator.dataset.previousKeyType = 'calculate'
-            }
 
-            if (action === 'del') {
-                display.innerHTML = displayOutput.substring(0, displayOutput.length - 1);
-                calculator.dataset.previousKeyType = 'del'
-            }
+                Array.from(target.parentNode.children).forEach(button => button.classList.remove('clicked'))
 
-            if (action === 'clear') {
-                calculator.dataset.firstValue = ''
-                calculator.dataset.modValue = ''
-                calculator.dataset.operator = ''
-                calculator.dataset.previousKeyType = ''
 
-                display.innerHTML = '0'
-                calculator.dataset.previousKeyType = 'clear'
-            }
+                this.isAction(action, content, displayOutput, previousKeyType, firstValue, secondValue, operator, target)
 
-            function calculate(num1, num2, operator) {
-                let result = ''
-                if (operator === 'add') {
-                    result = parseFloat(num1) + parseFloat(num2)
-                } else if (operator === 'subtract') {
-                    result = parseFloat(num1) - parseFloat(num2)
-                } else if (operator === 'multiply') {
-                    result = parseFloat(num1) * parseFloat(num2)
-                } else if (operator === 'divide') {
-                    result = parseFloat(num1) / parseFloat(num2)
+                if (action === 'decimal') {
+                    this.decimal(displayOutput, previousKeyType)
                 }
 
-                return result
-            }
+                if (action === 'del') {
+                    this.delete(displayOutput)
+                }
 
+                if (action === 'clear') {
+                    this.clear()
+                }
+
+                if (action === 'calculate') {
+                    this.initCalculate(firstValue, operator, secondValue, previousKeyType, displayOutput)
+                }
+            }
+        })
+    }
+    isAction(action, content, displayOutput, previousKeyType, firstValue, secondValue, operator, target) {
+        if (!action) {
+            if (displayOutput === '0' || previousKeyType === 'operator' || previousKeyType === 'calculate') {
+                this.display.innerHTML = content
+            }
+            else {
+                this.display.innerHTML = displayOutput + content
+            }
+            this.calculator.dataset.previousKeyType = 'number'
         }
-    })
+        switch (action) {
+            case 'divide':
+            case 'multiply':
+            case 'subtract':
+            case 'add':
+
+                if (firstValue && operator && previousKeyType !== 'operator' && previousKeyType !== 'calculate') {
+                    const value = this.calculate(firstValue, secondValue, operator)
+                    this.display.innerHTML = value
+                    this.calculator.dataset.firstValue = value
+                } else {
+                    this.calculator.dataset.firstValue = displayOutput
+                }
+                target.classList.add('clicked')
+                this.calculator.dataset.previousKeyType = 'operator'
+                this.calculator.dataset.operator = action
+        }
+        // console.log(action) // проверка action
+    }
+    decimal(displayOutput, previousKeyType) {
+        if (!displayOutput.includes('.')) {
+            this.display.innerHTML = displayOutput + '.'
+        } else if (previousKeyType === 'operator' || previousKeyType === 'calculate') {
+            this.display.innerHTML = '0'
+        }
+        this.calculator.dataset.previousKeyType = 'decimal'
+    }
+    delete(displayOutput) {
+        this.display.innerHTML = displayOutput.substring(0, displayOutput.length - 1);
+        this.calculator.dataset.previousKeyType = 'del'
+    }
+    clear() {
+        this.calculator.dataset.firstValue = ''
+        this.calculator.dataset.modValue = ''
+        this.calculator.dataset.operator = ''
+        this.calculator.dataset.previousKeyType = ''
+
+        this.display.innerHTML = '0'
+        this.calculator.dataset.previousKeyType = 'clear'
+    }
+    initCalculate(firstValue, operator, secondValue, previousKeyType, displayOutput) {
+        if (firstValue) {
+            if (previousKeyType === 'calculate') {
+                firstValue = displayOutput
+                secondValue = this.calculator.dataset.modValue
+            }
+            this.display.innerHTML = this.calculate(firstValue, secondValue, operator)
+        }
+        this.calculator.dataset.modValue = secondValue
+        this.calculator.dataset.previousKeyType = 'calculate'
+    }
+    calculate(firstValue, secondValue, operator) {
+        if (operator === 'add') {
+            return parseFloat(firstValue) + parseFloat(secondValue)
+        }
+        if (operator === 'subtract') {
+            return parseFloat(firstValue) - parseFloat(secondValue)
+        }
+        if (operator === 'multiply') {
+            return parseFloat(firstValue) * parseFloat(secondValue)
+        }
+        if (operator === 'divide') {
+            return parseFloat(firstValue) / parseFloat(secondValue)
+        }
+    }
 }
 
-
 function init() {
-    calculator()
+    const calculator = new Calculator()
+    calculator.start()
 }
 document.addEventListener('DOMContentLoaded', init)
