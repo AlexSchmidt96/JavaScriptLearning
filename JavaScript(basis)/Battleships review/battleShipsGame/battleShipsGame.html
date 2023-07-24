@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="battleships.js"></script>
+    <link rel="stylesheet" href="battleships.css">
+    <title>Battleship Arena</title>
+</head>
+
+<body>
+    <h1>Battleship Arena</h1>
+    <div id='battleArena'>
+        <div class='messageArea'>
+            <table id='playerArea'>
+                <thead></thead>
+                <tbody></tbody>
+            </table>
+            <table id='enemyArea'>
+                <thead></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <!--1.Кораблей должно быть 10 
+1 корабль — ряд из 4 клеток («четырёхпалубный»; линкор)
+2 корабля — ряд из 3 клеток («трёхпалубные»; крейсера)
+3 корабля — ряд из 2 клеток («двухпалубные»; эсминцы)
+4 корабля — 1 клетка («однопалубные»; торпедные катера)
+        2.Они занимают клетки и должны иметь определенную длину , указанную в описании
+        3.Корабли должны размещаться рандомно по всему полю
+        4.Корабли не должны соприкасаться и наслаиваться друг на друга
+        5.Корабли не должны уходить за границы поля и вылезать с противопопложной стороны поля
+        6.Должен быть реестр кораблей-->
+
+    <!-- Алгоритм размещения корабля 
+        1.Взять корабль из обьекта ships
+        2.Поместить на рандомную клетку часть корабля
+        3.Начать отступать по длине корабля в разные стороны(сторон всего 4: верх,вниз,влево,вправо) 
+        4.Если корабль упирается в границу поля, то прекращаем отступ(меняем место высадки на другую клетку?) и пробуем отступать в другую сторону
+        5.Смотрим не задеваем мы другой корабль (коллизия) иначе повторяем шаг 4 
+        6.Если все хорошо , то корабль оказывается на поле
+        7.Повторить с другими-->
+
+    <!-- { name: 'linkor', size: 4, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) }, // реестр с рандомной системой координат
+        { name: 'cruiser', size: 3, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'cruiser', size: 3, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'destroyer', size: 2, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'destroyer', size: 2, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'destroyer', size: 2, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат
+        { name: 'boat', size: 1, x: getRandomArbitrary(0, 10), y: getRandomArbitrary(0, 10) },// реестр с рандомной системой координат -->
+
+    <!-- let num = getRandomArbitrary(1, 4)
+        if (num === 1) {
+            obj = { coordinates: [{ xCoor: x + 1 }, { yCoor: y }] }
+            ships.push(obj)
+        } else if (num === 2) {
+            obj = { coordinates: [{ xCoor: x - 1 }, { yCoor: y }] }
+            ships.push(obj)
+        } else if (num === 3) {
+            obj = { coordinates: [{ xCoor: x }, { yCoor: y - 1 }] }
+            ships.push(obj)
+        } else if (num === 4) {
+            obj = { coordinates: [{ xCoor: x }, { yCoor: y + 1 }] }
+            ships.push(obj)
+        } -->
+
+    <!-- 
+        х,у ; check
+     х + 1,у ; check
+    x,y + 1; check
+    x - 1,y; check
+    x,y - 1; check
+    x - 1 , y - 1; check
+    x + 1, y + 1; check
+    x + 1 , y - 1; check
+    x - 1 , y + 1; check
+-->
+
+    <!-- рефакторинг! 
+    заоплнить вражеское поле!-->
+</body>
+
+</html>
