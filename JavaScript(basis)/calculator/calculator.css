@@ -1,0 +1,86 @@
+.calc {
+    margin: 50px auto;
+    width: 300px;
+    height: 500px;
+    border: 1px solid black;
+    border-radius: 20px;
+    background: black;
+    color: white;
+    font-family: Arial;
+    padding: 18px;
+    box-shadow: 4px 4px 4px grey;
+}
+
+.calc-screen {
+    height: 125px;
+    padding: 10px;
+    display: grid;
+    justify-items: end;
+    align-items: end;
+}
+
+.calculator-display {
+    text-align: right;
+    font-size: 70px;
+    margin: 0px;
+}
+
+.buttons {
+    margin-top: 25px;
+    display: grid;
+    grid-template-areas:
+        "clear clear del division"
+        "seven eight nine multiply"
+        "four five six minus"
+        "one two three plus"
+        "zero dot equal equal";
+    grid-gap: 7px;
+    justify-items: center;
+}
+
+.btn {
+    width: 60px;
+    height: 60px;
+    background: #333;
+    border-radius: 50%;
+    border: none;
+    text-align: center;
+    line-height: 60px;
+    cursor: pointer;
+    user-select: none;
+    color: white;
+}
+
+.clear {
+    grid-area: clear;
+    width: 100%;
+    border-radius: 34px;
+}
+
+.equal {
+    grid-area: equal;
+    width: 100%;
+    border-radius: 34px;
+}
+
+.btn:hover {
+    filter: brightness(120%);
+}
+
+.btn:active {
+    filter: brightness(90%);
+}
+
+.gray {
+    background: gray;
+}
+
+.orange {
+    background: orange;
+}
+
+.clicked {
+    filter: brightness(120%);
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
+    opacity: 0.3;
+}
