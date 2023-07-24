@@ -2,6 +2,12 @@ table {
     border-collapse: collapse;
 }
 
+#calendar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
 td,
 th {
     border: 1px solid black;
@@ -19,5 +25,10 @@ th {
 }
 
 .notCurrentMonthCell {
+    opacity: 50%;
+}
+
+span:hover {
+    cursor: pointer;
     opacity: 50%;
 }
