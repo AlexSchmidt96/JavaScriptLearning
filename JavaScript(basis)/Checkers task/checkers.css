@@ -1,0 +1,57 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+#area {
+    padding-top: 30px;
+}
+
+.messageArea {
+    display: flex;
+    justify-content: center;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td {
+    width: 45px;
+    height: 49px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+th {
+    padding: 10px;
+    font-weight: bold;
+    border: 0px;
+    background-color: white;
+}
+
+.blackCell {
+    background-color: grey;
+}
+
+.checker {
+    display: inline-block;
+    height: 44px;
+    width: 44px;
+    border-radius: 50%;
+    border: 1px solid #000;
+}
+
+.checker.white {
+    background-color: white;
+}
+
+.checker.black {
+    background-color: black;
+}
